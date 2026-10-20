@@ -1,0 +1,1154 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{box-sizing:border-box}body{margin:0}[hidden]{display:none!important}</style>
+<meta name="robots" content="noindex">
+</head><body>
+<title>Boîte à outils IAG Cayenne</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@500;600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: an atelier workbook — one sticky tab rail, a single reading column, tools as worked sheets. */
+:root{
+  --bg:#f3f0eb; --surface:#fdfbf8; --sunk:#ebe5de; --ink:#2b1f2d; --muted:#6b5d68; --line:#ddd4cc;
+  --accent:#ad2246; --accent-ink:#ffffff; --accent-soft:#f5dfe3;
+  --brand:#3c2b3e; --brand-ink:#f3f0eb; --peach:#e49370;
+  --fait:#2d7a3a; --fait-soft:#e2f1e3; --trompeur:#a35c00; --trompeur-soft:#f8ead3;
+  --avis:#2b5d9b; --avis-soft:#e1eaf6; --invente:#b0261d; --invente-soft:#f7e0dd;
+  --f-display:"Spectral", Georgia, "Times New Roman", serif;
+  --f-body:"Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#1f1720; --surface:#2a202b; --sunk:#181119; --ink:#f0ebe6; --muted:#b4a6b0; --line:#43354a;
+  --accent:#e8708f; --accent-ink:#2a0d16; --accent-soft:#4a2030;
+  --brand:#3c2b3e; --brand-ink:#f3f0eb; --peach:#e49370;
+  --fait:#7fcf8a; --fait-soft:#1a3320; --trompeur:#e8a64a; --trompeur-soft:#3a2a12;
+  --avis:#8fb6ea; --avis-soft:#1a2a40; --invente:#f08b80; --invente-soft:#3d1a17; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#1f1720; --surface:#2a202b; --sunk:#181119; --ink:#f0ebe6; --muted:#b4a6b0; --line:#43354a;
+  --accent:#e8708f; --accent-ink:#2a0d16; --accent-soft:#4a2030;
+  --brand:#3c2b3e; --brand-ink:#f3f0eb; --peach:#e49370;
+  --fait:#7fcf8a; --fait-soft:#1a3320; --trompeur:#e8a64a; --trompeur-soft:#3a2a12;
+  --avis:#8fb6ea; --avis-soft:#1a2a40; --invente:#f08b80; --invente-soft:#3d1a17; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55;margin:0}
+.wrap{max-width:880px;margin:0 auto;padding-inline:16px;padding-block:20px 48px}
+header.top{display:flex;flex-direction:column;gap:4px;padding-block:8px 14px}
+.eyebrow{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--f-display);font-weight:650;font-size:clamp(24px,4.4vw,34px);line-height:1.15;margin:0;text-wrap:balance}
+h2{font-family:var(--f-display);font-weight:650;font-size:22px;line-height:1.25;margin:0;text-wrap:balance}
+h3{font-family:var(--f-display);font-weight:500;font-size:18px;margin:0;text-wrap:balance}
+p{margin:0;max-width:68ch}
+.lede{color:var(--muted);max-width:68ch}
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);display:flex;gap:4px;overflow-x:auto;padding-block:8px;margin-bottom:22px}
+nav.tabs button{flex:0 0 auto;font:500 14px var(--f-body);color:var(--muted);background:none;border:1px solid transparent;border-radius:999px;padding:7px 14px;cursor:pointer}
+nav.tabs button[aria-selected="true"]{background:var(--ink);color:var(--bg)}
+nav.tabs button:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+section.panel{display:flex;flex-direction:column;gap:18px}
+.stack{display:flex;flex-direction:column;gap:12px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.sheet{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.note{font-size:13.5px;color:var(--muted)}
+.btn{font:500 14px var(--f-body);border-radius:8px;padding:8px 14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.ghost{background:none}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.seg{display:inline-flex;align-self:flex-start;max-width:100%;overflow-x:auto;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{font:500 13.5px var(--f-body);background:var(--surface);color:var(--muted);border:0;padding:7px 12px;cursor:pointer}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--accent-soft);color:var(--ink)}
+label.fl{display:flex;flex-direction:column;gap:4px;font-weight:500}
+input[type=text],textarea,select{font:15px var(--f-body);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%}
+textarea{min-height:64px;resize:vertical}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.feedback{font-size:13px;color:var(--accent);min-height:1.2em}
+
+/* Auto-positionnement */
+.item{display:grid;grid-template-columns:1fr;gap:8px;padding-block:12px;border-top:1px solid var(--line)}
+.item:first-of-type{border-top:0}
+.item .q{min-width:0}
+.scale{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.scale label{display:flex;flex-direction:column;align-items:center;gap:2px;border:1px solid var(--line);border-radius:8px;padding:6px 4px;cursor:pointer;font-size:12px;color:var(--muted);text-align:center}
+.scale label b{font:600 16px var(--f-mono);color:var(--ink)}
+.scale input{position:absolute;opacity:0;pointer-events:none}
+.scale label:has(input:checked){background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.scale label:has(input:checked) b{color:var(--accent-ink)}
+.scale label:has(input:focus-visible){outline:2px solid var(--accent);outline-offset:2px}
+@media (min-width:640px){.item{grid-template-columns:1fr 300px;align-items:center}}
+.levels{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.level{border:1px solid var(--line);border-radius:8px;padding:10px;font-size:13px;min-width:0}
+.level strong{display:block;font-family:var(--f-display);font-size:15px}
+.level .mono{color:var(--muted);font-size:12px}
+.level.on{border-color:var(--accent);background:var(--accent-soft)}
+@media (max-width:520px){.levels{grid-template-columns:1fr}}
+.code{font:600 22px var(--f-mono);letter-spacing:.12em}
+table.cmp{border-collapse:collapse;width:100%;font-size:14px}
+table.cmp th,table.cmp td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top}
+table.cmp td.n{font-family:var(--f-mono);text-align:center;white-space:nowrap}
+.scroll{overflow-x:auto}
+.up{color:var(--fait)} .down{color:var(--invente)}
+.grid-entry{display:grid;grid-template-columns:52px 1fr 1fr 64px 64px;gap:6px;align-items:center;font-size:13.5px;min-width:520px}
+.grid-entry .h{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.grid-entry input{font-family:var(--f-mono);letter-spacing:.2em;padding:6px 8px}
+.grid-entry input.bad{border-color:var(--invente)}
+.chart text{fill:var(--muted);font:11px var(--f-mono)}
+
+/* R.C.T.F.C. */
+.brick{display:grid;grid-template-columns:44px 1fr;gap:10px;align-items:start}
+.brick .letter{font:650 26px var(--f-display);color:var(--accent);line-height:1;padding-top:4px;text-align:center}
+.brick .letter small{display:block;font:500 10px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+.alert{border:1px solid var(--invente);background:var(--invente-soft);border-radius:8px;padding:10px 12px;font-size:14px}
+.alert ul{margin:6px 0 0;padding-left:18px}
+.hint{border:1px solid var(--trompeur);background:var(--trompeur-soft);border-radius:8px;padding:10px 12px;font-size:14px}
+pre.out{white-space:pre-wrap;font:14px/1.55 var(--f-mono);background:var(--sunk);border-radius:8px;padding:14px;margin:0;min-height:80px}
+.meter{display:flex;gap:4px}
+.meter span{width:28px;height:6px;border-radius:3px;background:var(--line)}
+.meter span.on{background:var(--accent)}
+
+/* Exercice */
+.chatbox{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--surface)}
+.chatbox .who{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:10px 14px 0}
+.chatbox .ask{padding:6px 14px 12px;font-style:italic;border-bottom:1px solid var(--line)}
+.segm{display:flex;flex-direction:column;gap:8px;padding:12px 14px;border-top:1px solid var(--line)}
+.segm:first-of-type{border-top:0}
+.segm .txt{font-size:15px}
+.segm .txt .rub{display:block;font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.cats{display:flex;flex-wrap:wrap;gap:6px}
+.cats button{font:500 12.5px var(--f-body);border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--muted);padding:5px 10px;cursor:pointer}
+.cats button[aria-pressed="true"][data-c="fait"]{background:var(--fait-soft);border-color:var(--fait);color:var(--ink)}
+.cats button[aria-pressed="true"][data-c="trompeur"]{background:var(--trompeur-soft);border-color:var(--trompeur);color:var(--ink)}
+.cats button[aria-pressed="true"][data-c="avis"]{background:var(--avis-soft);border-color:var(--avis);color:var(--ink)}
+.cats button[aria-pressed="true"][data-c="invente"]{background:var(--invente-soft);border-color:var(--invente);color:var(--ink)}
+.verdict{font-size:14px;border-left:3px solid var(--line);padding:4px 0 4px 10px}
+.verdict.ok{border-color:var(--fait)} .verdict.ko{border-color:var(--invente)}
+.tag{display:inline-block;font:500 11px var(--f-mono);letter-spacing:.04em;padding:1px 6px;border-radius:4px;background:var(--sunk);color:var(--muted);margin-left:4px}
+.legend{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;font-size:13.5px}
+.legend div{border-radius:8px;padding:8px 10px;min-width:0}
+.legend .fait{background:var(--fait-soft)} .legend .trompeur{background:var(--trompeur-soft)} .legend .avis{background:var(--avis-soft)} .legend .invente{background:var(--invente-soft)}
+@media (max-width:520px){.legend{grid-template-columns:1fr}}
+details{border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+details>summary{cursor:pointer;padding:10px 14px;font-weight:500}
+details>div{padding:0 14px 14px;display:flex;flex-direction:column;gap:10px}
+table.ind{border-collapse:collapse;font-size:13px;width:100%}
+table.ind th,table.ind td{border-bottom:1px solid var(--line);padding:5px 6px;text-align:right;font-variant-numeric:tabular-nums}
+table.ind th:first-child,table.ind td:first-child{text-align:left}
+.score{font:600 28px var(--f-mono)}
+
+/* Jeu de rôle */
+.timer{font:600 clamp(44px,12vw,72px)/1 var(--f-mono);font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.phase{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.bar{height:8px;background:var(--sunk);border-radius:4px;overflow:hidden;display:flex}
+.bar i{display:block;height:100%;background:var(--accent);transition:width .5s linear}
+.rota{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.rota div{border:1px solid var(--line);border-radius:8px;padding:8px;min-width:0}
+.rota .k{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.rota .v{font-weight:600}
+@media (max-width:520px){.rota{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.cardgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:640px){.cardgrid{grid-template-columns:1fr}}
+.rcard{border:1px solid var(--line);border-radius:var(--r);background:var(--surface);padding:14px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.rcard .back{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+.rcard dl{margin:0;display:grid;gap:6px}
+.rcard dt{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.rcard dd{margin:0}
+.obs{display:grid;grid-template-columns:1fr auto;gap:6px 10px;align-items:center;font-size:14px}
+.obs .h{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);grid-column:1/-1;margin-top:8px}
+.vu{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.vu button{font:500 12px var(--f-body);border:0;background:var(--surface);color:var(--muted);padding:4px 9px;cursor:pointer}
+.vu button+button{border-left:1px solid var(--line)}
+.vu button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+footer.sig{margin-top:40px;border-top:1px solid var(--line);padding-top:14px;font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:4px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* ===== Motion layer : hero, transitions d'onglet, 10 techniques ===== */
+:root{
+  --cadrer:#ad2246; --cadrer-soft:#f5dfe3;
+  --guider:#5b3f5e; --guider-soft:#ece3ec;
+  --controler:#b4562e; --controler-soft:#f8e6dc;
+  --mark:#ffe08a; --ease:cubic-bezier(.2,.8,.2,1);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --cadrer:#e8708f; --cadrer-soft:#4a2030; --guider:#c9a8cc; --guider-soft:#3a2a3c;
+  --controler:#e49370; --controler-soft:#43281c; --mark:#5c4a12}}
+:root[data-theme="dark"]{
+  --cadrer:#e8708f; --cadrer-soft:#4a2030; --guider:#c9a8cc; --guider-soft:#3a2a3c;
+  --controler:#e49370; --controler-soft:#43281c; --mark:#5c4a12}
+.wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+
+/* Bandeau La Relève Santé */
+header.hero{background:var(--brand);color:var(--brand-ink);border-radius:16px;padding:22px 20px;margin-top:8px}
+header.hero .eyebrow{color:var(--peach)}
+header.hero .lede{color:#d9cfd6}
+header.hero h1{font-weight:500}
+header.hero .assembly{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.16)}
+header.hero .bricks span{color:#d9cfd6;border-color:rgba(255,255,255,.25)}
+header.hero .bricks span.on{background:var(--accent);border-color:var(--accent);color:#fff}
+header.hero .typed{color:var(--brand-ink)}
+.brandline{display:flex;align-items:center;gap:10px;font:600 13px var(--f-body);letter-spacing:.02em;color:var(--brand-ink)}
+.brandline i{display:inline-block;width:22px;height:3px;background:var(--accent);border-radius:2px;transform:skewX(-30deg)}
+h1,h2,.big{font-weight:500}
+/* Hero : la demande qui s'assemble */
+.hero{display:grid;gap:14px;padding-block:6px 18px}
+.assembly{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:10px;overflow:hidden;min-width:0}
+.bricks{display:flex;flex-wrap:wrap;gap:6px}
+.bricks span{font:500 12px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--line);border-radius:999px;padding:4px 10px;color:var(--muted);transition:background .35s var(--ease),color .35s var(--ease),border-color .35s var(--ease),transform .35s var(--ease)}
+.bricks span.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);transform:translateY(-2px)}
+.typed{font:14px/1.6 var(--f-mono);min-height:4.8em;color:var(--ink)}
+.typed .caret{display:inline-block;width:.55em;height:1.05em;vertical-align:-.15em;background:var(--accent);margin-left:1px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* Onglets : pastille glissante et entrée des panneaux */
+nav.tabs{position:sticky}
+nav.tabs button{position:relative;transition:color .25s var(--ease),background .25s var(--ease)}
+nav.tabs button .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--controler);margin-left:6px;vertical-align:2px}
+section.panel.enter{animation:panelIn .45s var(--ease) both}
+@keyframes panelIn{from{transform:translateY(10px);opacity:.25}to{transform:none;opacity:1}}
+.stale{display:flex;gap:10px;align-items:flex-start;border:1px dashed var(--controler);background:var(--controler-soft);border-radius:10px;padding:10px 12px;font-size:14px}
+.stale b{font:600 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--controler);white-space:nowrap;padding-top:2px}
+
+/* 10 techniques */
+.th-head{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between}
+.th-head .stack{flex:1 1 320px;min-width:0}
+.ring{display:flex;align-items:center;gap:10px}
+.ring svg{width:64px;height:64px;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:6}
+.ring .trk{stroke:var(--sunk)}
+.ring .val{stroke:var(--accent);stroke-linecap:round;transition:stroke-dashoffset .8s var(--ease)}
+.ring .lbl{display:flex;flex-direction:column;font-size:12.5px;color:var(--muted)}
+.ring .lbl b{font:600 20px var(--f-mono);color:var(--ink)}
+.tiles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;perspective:900px}
+@media (max-width:640px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.tile{--fam:var(--cadrer);--fam-soft:var(--cadrer-soft);position:relative;text-align:left;font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 10px 12px;cursor:pointer;display:flex;flex-direction:column;gap:4px;min-width:0;transform-style:preserve-3d;transition:transform .3s var(--ease),border-color .25s,background .25s,box-shadow .3s;animation:rise .5s var(--ease) both;animation-delay:calc(var(--i) * 45ms)}
+.tile[data-fam="guider"]{--fam:var(--guider);--fam-soft:var(--guider-soft)}
+.tile[data-fam="controler"]{--fam:var(--controler);--fam-soft:var(--controler-soft)}
+.tile .num{font:600 12px var(--f-mono);color:var(--fam)}
+.tile .nm{font:500 14px/1.3 var(--f-body)}
+.tile .done{position:absolute;top:8px;right:8px;width:18px;height:18px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font:600 11px var(--f-mono);color:transparent;transition:all .3s var(--ease)}
+.tile.tried .done{background:var(--fam);border-color:var(--fam);color:var(--surface);transform:scale(1.1)}
+.tile:hover{border-color:var(--fam)}
+.tile[aria-selected="true"]{background:var(--fam-soft);border-color:var(--fam);box-shadow:0 6px 18px -10px var(--fam)}
+.tile.dim{opacity:.35}
+@keyframes rise{from{transform:translateY(12px) scale(.97);opacity:.2}to{transform:none;opacity:1}}
+.lab{--fam:var(--cadrer);--fam-soft:var(--cadrer-soft);background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0;position:relative;overflow:hidden}
+.lab[data-fam="guider"]{--fam:var(--guider);--fam-soft:var(--guider-soft)}
+.lab[data-fam="controler"]{--fam:var(--controler);--fam-soft:var(--controler-soft)}
+.lab::before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:var(--fam);transform-origin:top;animation:grow .6s var(--ease) both}
+@keyframes grow{from{transform:scaleY(0)}to{transform:none}}
+.lab.swap .lab-body{animation:labIn .4s var(--ease) both}
+@keyframes labIn{from{transform:translateX(16px);opacity:.15}to{transform:none;opacity:1}}
+.lab-body{display:flex;flex-direction:column;gap:14px;min-width:0}
+.lab .meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.chip{font:500 11.5px var(--f-mono);letter-spacing:.04em;border-radius:999px;padding:3px 9px;background:var(--fam-soft);color:var(--ink);border:1px solid var(--fam)}
+.chip.plain{background:var(--sunk);border-color:var(--line);color:var(--muted)}
+.big{font:650 clamp(22px,4vw,28px)/1.2 var(--f-display);margin:0;text-wrap:balance}
+.toggle{position:relative;display:inline-grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:999px;padding:3px;align-self:flex-start;background:var(--sunk)}
+.toggle button{position:relative;z-index:1;font:500 13.5px var(--f-body);border:0;background:none;color:var(--muted);padding:6px 16px;cursor:pointer;border-radius:999px;transition:color .3s}
+.toggle button[aria-pressed="true"]{color:var(--accent-ink)}
+.toggle .pill{position:absolute;top:3px;bottom:3px;left:3px;width:calc(50% - 3px);border-radius:999px;background:var(--fam);transition:transform .4s var(--ease)}
+.toggle[data-v="apres"] .pill{transform:translateX(100%)}
+.demand{font:14.5px/1.65 var(--f-mono);background:var(--sunk);border-radius:10px;padding:14px;white-space:pre-wrap;min-height:5em;margin:0;overflow-wrap:anywhere}
+.demand mark{color:inherit;background:linear-gradient(var(--mark),var(--mark)) no-repeat left/0% 100%;animation:sweep .7s var(--ease) .1s forwards;border-radius:3px;padding:0 1px}
+@keyframes sweep{to{background-size:100% 100%}}
+.demand .label{display:block;font:500 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.pitfall{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;border-top:1px solid var(--line);padding-top:12px}
+.pitfall b{font:600 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--invente);padding-top:3px}
+.btn.tried{background:var(--fam-soft);border-color:var(--fam)}
+.btn{transition:transform .15s var(--ease),border-color .2s,background .2s}
+.btn:active{transform:scale(.97)}
+
+/* Quiz */
+.quiz{display:flex;flex-direction:column;gap:12px}
+.qcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.qcard.enter{animation:labIn .4s var(--ease) both}
+.qcard .pr{font:14.5px/1.6 var(--f-mono);background:var(--sunk);border-radius:10px;padding:12px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opts button{font:500 13.5px var(--f-body);border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:7px 13px;cursor:pointer;transition:transform .2s var(--ease),background .25s,border-color .25s}
+.opts button:hover{border-color:var(--muted)}
+.opts button.right{background:var(--fait-soft);border-color:var(--fait);animation:pop .35s var(--ease)}
+.opts button.wrong{background:var(--invente-soft);border-color:var(--invente);animation:shake .35s}
+@keyframes pop{50%{transform:scale(1.08)}}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.qsteps{display:flex;gap:5px}
+.qsteps i{flex:1;height:5px;border-radius:3px;background:var(--line);transition:background .3s}
+.qsteps i.ok{background:var(--fait)} .qsteps i.ko{background:var(--invente)} .qsteps i.cur{background:var(--muted)}
+
+/* Feu tricolore */
+.lights{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px}
+.pole{display:flex;flex-direction:column;gap:8px;background:var(--ink);border-radius:999px;padding:8px}
+.pole button{width:34px;height:34px;border-radius:50%;border:0;cursor:pointer;opacity:.28;transition:opacity .3s,box-shadow .3s,transform .3s var(--ease)}
+.pole button[data-l="rouge"]{background:#d6453a} .pole button[data-l="orange"]{background:#e89a2c} .pole button[data-l="vert"]{background:#3aa55a}
+.pole button[aria-pressed="true"]{opacity:1;transform:scale(1.08);box-shadow:0 0 18px 2px currentColor}
+.pole button[data-l="rouge"]{color:#d6453a} .pole button[data-l="orange"]{color:#e89a2c} .pole button[data-l="vert"]{color:#3aa55a}
+.lighttxt{min-width:0}
+.lighttxt.enter{animation:labIn .35s var(--ease) both}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.demand mark{background-size:100% 100%}}
+</style>
+<div class="wrap">
+  <header class="top hero">
+    <span class="brandline"><i aria-hidden="true"></i>La Relève Santé</span>
+    <span class="eyebrow">Formation La Relève · Manager avec l'IA générative · CH de Cayenne · 26 au 29 octobre 2026</span>
+    <h1>Boîte à outils de la formation</h1>
+    <p class="lede">Des outils numériques adossés au support de la formation (version d'octobre 2026). Ils servent en salle, sur poste ou sur téléphone. Rien n'est envoyé à une IA : vous copiez vos demandes dans l'outil autorisé par l'établissement.</p>
+    <div class="assembly" aria-label="Exemple de demande construite brique par brique">
+      <div class="bricks" id="hero-bricks"><span>Rôle</span><span>Contexte</span><span>Tâche</span><span>Format</span><span>Contraintes</span></div>
+      <div class="typed" id="hero-typed">Tu aides une cadre de santé à préparer une réunion d'équipe. À partir du compte rendu ci-dessous, liste les décisions prises, en tableau à trois colonnes. N'invente aucun nom ni aucune date : écris « à vérifier ».</div>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Outils">
+    <button role="tab" id="tab-tech" aria-controls="p-tech" data-t="tech">10 techniques</button>
+    <button role="tab" id="tab-rctfc" aria-controls="p-rctfc" data-t="rctfc">Écrire une demande</button>
+    <button role="tab" id="tab-exo" aria-controls="p-exo" data-t="exo">Fait, avis ou inventé ?<span class="dot" title="Version de septembre"></span></button>
+    <button role="tab" id="tab-roles" aria-controls="p-roles" data-t="roles">Jeu de rôle<span class="dot" title="Version de septembre"></span></button>
+    <button role="tab" id="tab-auto" aria-controls="p-auto" data-t="auto">Auto-positionnement<span class="dot" title="Remplacé par Dendreo"></span></button>
+  </nav>
+
+  <!-- ============ 10 TECHNIQUES ============ -->
+  <section class="panel" id="p-tech" role="tabpanel" aria-labelledby="tab-tech" hidden>
+    <div class="th-head">
+      <div class="stack">
+        <h2>10 techniques de demande</h2>
+        <p class="lede">Choisissez une technique, comparez la demande avant et après, copiez la version renforcée et essayez-la dans l'outil de l'établissement. Les techniques 1 à 5 reprennent R.C.T.F.C. (planche 26), la 9 reprend la critique de la demande (planche 28).</p>
+      </div>
+      <div class="ring" aria-live="polite">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><circle class="trk" cx="32" cy="32" r="26"/><circle class="val" id="th-ring" cx="32" cy="32" r="26" stroke-dasharray="163.4" stroke-dashoffset="163.4"/></svg>
+        <span class="lbl"><b id="th-count">0 / 10</b>essayées</span>
+      </div>
+    </div>
+    <div class="seg" role="group" aria-label="Famille" id="th-fam">
+      <button type="button" data-f="all" aria-pressed="true">Toutes</button>
+      <button type="button" data-f="cadrer" aria-pressed="false">Cadrer · 1 à 5</button>
+      <button type="button" data-f="guider" aria-pressed="false">Guider · 6 à 8</button>
+      <button type="button" data-f="controler" aria-pressed="false">Contrôler · 9 et 10</button>
+    </div>
+    <div class="tiles" id="th-tiles" role="listbox" aria-label="Techniques"></div>
+    <div class="lab" id="th-lab" aria-live="polite"><div class="lab-body" id="th-body"></div></div>
+
+    <h3>Quelle technique manque ?</h3>
+    <p class="note">Six demandes réelles de cadres, chacune avec un oubli. Trouvez la technique qui la répare.</p>
+    <div class="quiz" id="th-quiz"></div>
+
+    <h3>Avant de coller : le feu tricolore</h3>
+    <div class="lights">
+      <div class="pole" role="group" aria-label="Feu tricolore des données">
+        <button type="button" data-l="rouge" aria-pressed="true" aria-label="Rouge"></button>
+        <button type="button" data-l="orange" aria-pressed="false" aria-label="Orange"></button>
+        <button type="button" data-l="vert" aria-pressed="false" aria-label="Vert"></button>
+      </div>
+      <div class="lighttxt stack" id="th-light"></div>
+    </div>
+  </section>
+
+  <!-- ============ AUTO-POSITIONNEMENT ============ -->
+  <section class="panel" id="p-auto" role="tabpanel" aria-labelledby="tab-auto" hidden>
+    <div class="stale"><b>Remplacé</b><span>Depuis le support d'octobre, l'auto-positionnement officiel passe par Dendreo (La Relève Santé). Cet outil reste disponible pour un repérage personnel.</span></div>
+    <div class="row" style="justify-content:space-between">
+      <h2>Auto-positionnement</h2>
+      <div class="seg" role="group" aria-label="Vue">
+        <button type="button" id="ap-v-part" aria-pressed="true">Participant</button>
+        <button type="button" id="ap-v-form" aria-pressed="false">Synthèse formateur</button>
+      </div>
+    </div>
+
+    <div id="ap-part" class="stack">
+      <p class="lede">Une fois en arrivant, une fois en repartant. Rien n'est noté. 1 pas du tout · 2 un peu · 3 plutôt oui · 4 tout à fait. Votre réponse du matin reste cachée quand vous répondez en fin de session.</p>
+      <div class="seg" role="group" aria-label="Moment">
+        <button type="button" id="ap-m-in" aria-pressed="true">En arrivant</button>
+        <button type="button" id="ap-m-out" aria-pressed="false">En repartant</button>
+      </div>
+      <div id="ap-resume" class="sheet stack" hidden>
+        <label class="fl" for="ap-code-in">Pas de réponse d'arrivée sur cet appareil. Saisissez votre code d'arrivée (8 chiffres), ou continuez sans.
+          <input type="text" id="ap-code-in" inputmode="numeric" maxlength="8" placeholder="ex. 23121342" autocomplete="off">
+        </label>
+      </div>
+      <form id="ap-form" class="sheet" novalidate></form>
+      <div class="row">
+        <button type="button" class="btn primary" id="ap-save">Valider mes réponses</button>
+        <span class="feedback" id="ap-fb" role="status"></span>
+      </div>
+      <div id="ap-result" class="stack" hidden></div>
+    </div>
+
+    <div id="ap-form-view" class="stack" hidden>
+      <p class="lede">Saisie des feuilles papier rendues en fin de session. Une ligne par stagiaire, sans nom : 8 chiffres de 1 à 4 dans l'ordre des items, colonne de gauche puis colonne de droite.</p>
+      <div class="row">
+        <label class="fl" for="ap-sess" style="flex:1 1 220px">Session
+          <select id="ap-sess">
+            <option value="g1">Groupe 1 · 26 et 27 octobre</option>
+            <option value="g2">Groupe 2 · 28 et 29 octobre</option>
+          </select>
+        </label>
+        <span class="note" id="ap-store" style="flex:1 1 260px"></span>
+      </div>
+      <div class="sheet scroll"><div class="grid-entry" id="ap-grid"></div></div>
+      <div class="row">
+        <button type="button" class="btn" id="ap-addrow">Ajouter une ligne</button>
+        <button type="button" class="btn" id="ap-copy">Copier la synthèse</button>
+        <button type="button" class="btn" id="ap-csv" hidden>Télécharger en CSV</button>
+        <span class="feedback" id="ap-fb2" role="status"></span>
+      </div>
+      <div id="ap-synth" class="stack"></div>
+    </div>
+  </section>
+
+  <!-- ============ R.C.T.F.C. ============ -->
+  <section class="panel" id="p-rctfc" role="tabpanel" aria-labelledby="tab-rctfc" hidden>
+    <h2>Écrire une demande à l'IA · méthode R.C.T.F.C.</h2>
+    <p class="lede">Cinq briques, dans cet ordre, à chaque demande. L'outil assemble votre demande et repère ce qui ressemble à une information de la liste rouge. Il ne l'envoie nulle part : vous la copiez dans l'assistant autorisé par votre établissement.</p>
+    <div class="row">
+      <span class="note">Partir d'une demande modèle du carnet :</span>
+      <button type="button" class="btn ghost" data-model="synthese">Synthèse</button>
+      <button type="button" class="btn ghost" data-model="reunion">Réunion</button>
+      <button type="button" class="btn ghost" data-model="plan">Plan d'action</button>
+      <button type="button" class="btn ghost" data-model="message">Message à l'équipe</button>
+      <button type="button" class="btn ghost" id="rc-clear">Vider</button>
+    </div>
+    <div class="sheet stack" id="rc-bricks"></div>
+    <div id="rc-alert" class="alert" role="alert" hidden></div>
+    <div id="rc-hint" class="hint" hidden></div>
+    <div class="stack">
+      <div class="row" style="justify-content:space-between">
+        <h3>Votre demande</h3>
+        <div class="row"><div class="meter" id="rc-meter" aria-hidden="true"></div><span class="note mono" id="rc-count"></span></div>
+      </div>
+      <pre class="out" id="rc-out" aria-live="polite"></pre>
+      <div class="row">
+        <button type="button" class="btn primary" id="rc-copy">Copier la demande</button>
+        <span class="feedback" id="rc-fb" role="status"></span>
+      </div>
+      <p class="note">Le repérage est automatique et incomplet : un poste, un horaire et une ancienneté suffisent parfois à identifier une personne. La relecture reste la vôtre.</p>
+    </div>
+    <details>
+      <summary>Les trois vérifications avant le premier usage</summary>
+      <div>
+        <p>L'entraînement sur vos données est désactivé : à vérifier dans les réglages, ou auprès de la direction informatique.</p>
+        <p>Un accord de traitement des données existe entre votre établissement et l'éditeur de l'outil.</p>
+        <p>L'hébergement est certifié données de santé si des données de santé à caractère personnel sont en jeu. En cas de doute : direction informatique ou délégué à la protection des données.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ FAIT / AVIS / INVENTÉ ============ -->
+  <section class="panel" id="p-exo" role="tabpanel" aria-labelledby="tab-exo" hidden>
+    <div class="stale"><b>Septembre</b><span>Exercice de la version de septembre (unité B2), hors du déroulé d'octobre. Réutilisable en palier débutant ou en complément.</span></div>
+    <h2>Fait, avis ou inventé ?</h2>
+    <p class="lede">Trois réponses d'IA sur l'unité B2, avec des erreurs placées exprès. Classez chaque passage, puis affichez la correction. Vous ne savez ni combien d'erreurs il y a, ni où elles sont.</p>
+    <div class="legend">
+      <div class="fait"><strong>Fait vérifiable</strong><br>On le retrouve tel quel dans les sources.</div>
+      <div class="trompeur"><strong>Exact mais trompeur</strong><br>Juste en apparence, faux dans ce qu'il fait comprendre.</div>
+      <div class="avis"><strong>Avis présenté comme un fait</strong><br>Une perception, un jugement ou une généralisation.</div>
+      <div class="invente"><strong>Inventé</strong><br>Absent des sources : donnée, cause, date, promesse.</div>
+    </div>
+    <div class="seg" role="group" aria-label="Feuille" id="ex-pick"></div>
+    <div id="ex-body" class="stack"></div>
+    <details>
+      <summary>Limites de cet exercice</summary>
+      <div>
+        <p>Les trois réponses d'IA reprennent mot pour mot les feuilles 02, 04 et 05 de l'annexe C du guide du formateur. Les corrections marquées « guide » reprennent les clés de débrief de la partie 5.</p>
+        <p>Les corrections marquées « à valider » sont un classement proposé par Jean-Luc STANISLAS sur des passages que le guide ne commente pas, par exemple « après 19 h » alors que le corpus compte les admissions après 18 h. Elles sont à valider avec La Relève Santé avant la session.</p>
+        <p>Le découpage en passages et la grille à quatre catégories sont propres à cet outil. La grille vient de l'item 4 de l'auto-positionnement : repérer ce qui est un fait, un avis, et ce qui a été inventé.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ JEU DE RÔLE ============ -->
+  <section class="panel" id="p-roles" role="tabpanel" aria-labelledby="tab-roles" hidden>
+    <div class="stale"><b>Septembre</b><span>Jeu de rôle de la version de septembre (atelier 05), hors du déroulé d'octobre. Réutilisable pour préparer l'annonce d'un test à l'équipe.</span></div>
+    <h2>Jeu de rôle · annoncer un test à son équipe</h2>
+    <p class="lede">Le cadre annonce à son équipe un test d'un mois : un assistant autorisé pour préparer des brouillons d'ordre du jour et structurer des notes non sensibles, toujours relus. Il présente trois minutes, puis répond quatre minutes. Deux membres de l'équipe réagissent. Un écran par groupe de quatre.</p>
+    <div class="row">
+      <span class="note">Tour</span>
+      <div class="seg" role="group" aria-label="Tour" id="ro-tours"></div>
+      <button type="button" class="btn" id="ro-reset">Nouveau groupe</button>
+    </div>
+    <div class="rota" id="ro-rota"></div>
+    <p class="note">Trois règles avant de commencer : la carte donne une position, pas un texte à réciter. On ne force pas le trait. On reste dans son rôle jusqu'à la fin du temps.</p>
+    <div class="cardgrid" id="ro-cards"></div>
+    <div class="sheet stack">
+      <div class="row" style="justify-content:space-between;align-items:flex-end">
+        <div class="stack" style="gap:4px"><span class="phase" id="ro-phase">Prêt · 7 minutes</span><span class="timer" id="ro-time">07:00</span></div>
+        <div class="row">
+          <button type="button" class="btn primary" id="ro-start">Démarrer</button>
+          <button type="button" class="btn" id="ro-stop">Remettre à zéro</button>
+        </div>
+      </div>
+      <div class="bar" aria-hidden="true"><i id="ro-bar" style="width:0%"></i></div>
+    </div>
+    <div class="sheet stack">
+      <h3>Grille de l'observateur</h3>
+      <p class="note">Cochez ce qui a été clairement expliqué, pas ce qui a été effleuré. En cas de doute, c'est « pas vu ».</p>
+      <div class="obs" id="ro-obs"></div>
+      <label class="fl" for="ro-best">La réponse la plus claire entendue<textarea id="ro-best"></textarea></label>
+      <label class="fl" for="ro-left">L'objection restée sans réponse<textarea id="ro-left"></textarea></label>
+      <div class="row">
+        <button type="button" class="btn primary" id="ro-next">Enregistrer ce tour</button>
+        <button type="button" class="btn" id="ro-copy">Copier le bilan des tours</button>
+        <span class="feedback" id="ro-fb" role="status"></span>
+      </div>
+      <div id="ro-log" class="stack"></div>
+    </div>
+  </section>
+
+  <footer class="sig">
+    <span>Contenus pédagogiques : La Relève Santé, module « Manager avec l'IA générative » : support d'octobre 2026 (V4) pour les 10 techniques et le feu tricolore ; carnet de méthode, feuille d'auto-positionnement et guide du formateur de septembre 2026 pour les autres onglets.</span>
+    <span>Outil numérique et techniques 6 et 8 : <strong>Jean-Luc STANISLAS</strong>, Membre expert HAS Programme PACTE.</span>
+    <span>Aucune donnée nominative n'est demandée. Les réponses des participants restent sur leur appareil.</span>
+  </footer>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   AUDIT DOCUMENTAIRE — 02/10/2026
+   Sources : La Relève Santé, MOD_2026038 « Manager avec l'IA générative »
+   - Feuille d'auto-positionnement (docx, 09/2026)
+   - Carnet de méthode IA (docx, 09/2026)
+   - Guide du formateur (docx, 09/2026) : annexe A (corpus B2), annexe B3/B4,
+     annexe C feuilles 02/04/05 (images, lues par OCR), partie 5 (clés de débrief)
+   🟢 VÉRIFIÉ : 8 items, échelle 1-4, total /32, seuils 8-15 / 16-23 / 24-32 et
+      libellés de niveau (feuille) ; 5 briques et amorces, 4 demandes modèles,
+      liste rouge, 3 vérifications (carnet) ; 5 cartes B3, rotation, 7 min
+      (3+4), grille B4 (guide) ; textes IA des feuilles 02/04/05 (annexe C).
+   🟠 DÉDUIT : découpage des demandes modèles en briques ; classement des
+      passages non commentés par la partie 5 (marqués « à valider ») ;
+      motifs de repérage de la liste rouge (heuristiques).
+   🔴 ABSENT : aucune donnée fabriquée ; pas de seuil de progression
+      « significative » (le support n'en donne pas) : écarts affichés bruts.
+   ═══════════════════════════════════════════════════════ */
+(function(){
+"use strict";
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}};
+function flash(el,msg,ms){el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(()=>{el.textContent=""},ms||3000)}
+async function copyText(text,fb){
+  try{await navigator.clipboard.writeText(text);flash(fb,"Copié");return}catch(e){}
+  const ta=document.createElement("textarea");ta.value=text;ta.style.cssText="position:fixed;left:-9999px";document.body.appendChild(ta);ta.select();
+  let ok=false;try{ok=document.execCommand("copy")}catch(e){}
+  document.body.removeChild(ta);
+  if(ok){flash(fb,"Copié");return}
+  const pre=document.createElement("textarea");pre.readOnly=true;pre.value=text;pre.style.minHeight="160px";fb.parentElement.after(pre);pre.focus();pre.select();flash(fb,"Sélectionnez le texte ci-dessous puis copiez-le",6000);
+}
+
+/* ---------- Onglets ---------- */
+const TABS=["tech","rctfc","exo","roles","auto"];
+function showTab(t){
+  if(!TABS.includes(t))t="tech";
+  $$("nav.tabs button").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.t===t)));
+  TABS.forEach(x=>{$("#p-"+x).hidden=x!==t});
+  try{localStorage.setItem("cay-tab",t)}catch(e){}
+}
+$$("nav.tabs button").forEach(b=>b.addEventListener("click",()=>{showTab(b.dataset.t);if(history.replaceState)history.replaceState(null,"","#"+b.dataset.t)}));
+const initial=(location.hash||"").slice(1)||(function(){try{return localStorage.getItem("cay-tab")}catch(e){return null}})()||"tech";
+showTab(initial);
+
+/* =========================================================
+   1. AUTO-POSITIONNEMENT
+   ========================================================= */
+const ITEMS=[
+ "Devant une tâche qui me prend du temps, je sais dire si je peux la confier à une IA, et à quelles conditions.",
+ "Je sais citer trois informations que je ne taperai jamais dans un assistant.",
+ "Quand j'écris à une IA, je dis pour qui j'écris, ce que je veux, et sous quelle forme.",
+ "Dans un texte écrit par une IA, je repère ce qui est un fait, ce qui est un avis, et ce qui a été inventé.",
+ "J'écris l'objectif d'une réunion en une phrase qui commence par « À la fin, nous aurons… ».",
+ "Après une réunion, je transforme « il faudrait » en une action avec un pilote, une date et une preuve.",
+ "Je sais expliquer à mon équipe, en trois minutes, ce que je fais avec l'IA et pourquoi.",
+ "Je sais lancer un test d'un mois en disant à l'avance à quelle condition je l'arrête."
+];
+const SHORT=["Confier une tâche","Liste rouge","Écrire la demande","Fait / avis / inventé","Objectif de réunion","Il faudrait → action","Expliquer à l'équipe","Test avec arrêt"];
+const SCALE=["pas du tout","un peu","plutôt oui","tout à fait"];
+const LEVELS=[{min:8,max:15,name:"Découverte",txt:"L'IA est un sujet, pas encore un outil."},{min:16,max:23,name:"En pratique",txt:"Je m'en sers, sans règle écrite."},{min:24,max:32,name:"Autonome",txt:"J'ai une méthode, et je sais l'expliquer à mon équipe."}];
+const levelOf=t=>LEVELS.find(l=>t>=l.min&&t<=l.max);
+const sum=a=>a.reduce((x,y)=>x+y,0);
+let apMoment="in";
+
+function buildApForm(){
+  const f=$("#ap-form");
+  f.innerHTML=ITEMS.map((q,i)=>`<div class="item"><div class="q"><span class="mono note">${i+1}.</span> ${esc(q)}</div>
+   <div class="scale" role="radiogroup" aria-label="Item ${i+1}">${SCALE.map((s,j)=>`<label><input type="radio" name="ap${i}" id="ap-${apMoment}-${i}-${j+1}" value="${j+1}"><b>${j+1}</b>${s}</label>`).join("")}</div></div>`).join("");
+}
+function readAp(){return ITEMS.map((_,i)=>{const c=$(`#ap-form input[name="ap${i}"]:checked`);return c?Number(c.value):0})}
+function setMoment(m){
+  apMoment=m;$("#ap-m-in").setAttribute("aria-pressed",String(m==="in"));$("#ap-m-out").setAttribute("aria-pressed",String(m==="out"));
+  buildApForm();$("#ap-result").hidden=true;$("#ap-form").hidden=false;$("#ap-save").hidden=false;
+  const has=!!store.get("cay-ap-in");
+  $("#ap-resume").hidden=!(m==="out"&&!has);
+  $("#ap-save").textContent=m==="in"?"Valider mes réponses d'arrivée":"Valider mes réponses de départ";
+}
+$("#ap-m-in").addEventListener("click",()=>setMoment("in"));
+$("#ap-m-out").addEventListener("click",()=>setMoment("out"));
+function levelsHtml(t){return `<div class="levels">${LEVELS.map(l=>`<div class="level${t>=l.min&&t<=l.max?" on":""}"><strong>${l.name}</strong><span class="mono">${l.min} à ${l.max}</span><br>${l.txt}</div>`).join("")}</div>`}
+let memIn=null;
+$("#ap-save").addEventListener("click",()=>{
+  const v=readAp();const miss=v.map((x,i)=>x?0:i+1).filter(Boolean);
+  if(miss.length){flash($("#ap-fb"),"Il manque une réponse aux items "+miss.join(", ")+".",5000);return}
+  const t=sum(v);const res=$("#ap-result");
+  if(apMoment==="in"){
+    memIn=v;const saved=store.set("cay-ap-in",v);const code=v.join("");
+    res.innerHTML=`<div class="sheet stack"><h3>Votre point de départ : <span class="mono">${t} / 32</span></h3>${levelsHtml(t)}
+     <p>Votre code d'arrivée, à noter en haut de votre feuille papier :</p><span class="code">${code}</span>
+     <p class="note">${saved?"Vos réponses sont aussi gardées sur cet appareil.":"Cet appareil ne peut pas garder vos réponses : notez le code."} Elles seront cachées quand vous répondrez en repartant.</p></div>`;
+  }else{
+    let vin=store.get("cay-ap-in")||memIn;
+    const typed=($("#ap-code-in").value||"").trim();
+    if((!vin||!Array.isArray(vin))&&/^[1-4]{8}$/.test(typed))vin=typed.split("").map(Number);
+    let html=`<div class="sheet stack"><h3>En repartant : <span class="mono">${t} / 32</span></h3>${levelsHtml(t)}`;
+    if(vin&&vin.length===8){
+      const ti=sum(vin);const d=t-ti;
+      html+=`<p>En arrivant : <span class="mono">${ti} / 32</span> (${levelOf(ti).name}). Écart : <span class="mono ${d>0?"up":d<0?"down":""}">${d>0?"+":""}${d}</span>.</p>
+      <div class="scroll"><table class="cmp"><thead><tr><th>Item</th><th>Arrivée</th><th>Départ</th></tr></thead><tbody>${ITEMS.map((q,i)=>`<tr><td>${i+1}. ${esc(SHORT[i])}</td><td class="n">${vin[i]}</td><td class="n">${v[i]}</td></tr>`).join("")}</tbody></table></div>`;
+    }else{html+=`<p class="note">Pas de réponse d'arrivée retrouvée : seul votre point de sortie s'affiche.</p>`}
+    html+=`<p>Reportez vos réponses dans la colonne de droite de votre feuille papier et rendez-la au formateur : c'est la preuve d'évaluation avant et après.</p></div>`;
+    res.innerHTML=html;
+  }
+  res.hidden=false;$("#ap-form").hidden=true;$("#ap-save").hidden=true;$("#ap-resume").hidden=true;
+  res.scrollIntoView({behavior:"smooth",block:"start"});
+});
+setMoment("in");
+
+/* ---- Vue formateur ---- */
+$("#ap-v-part").addEventListener("click",()=>{$("#ap-v-part").setAttribute("aria-pressed","true");$("#ap-v-form").setAttribute("aria-pressed","false");$("#ap-part").hidden=false;$("#ap-form-view").hidden=true});
+$("#ap-v-form").addEventListener("click",()=>{$("#ap-v-part").setAttribute("aria-pressed","false");$("#ap-v-form").setAttribute("aria-pressed","true");$("#ap-part").hidden=true;$("#ap-form-view").hidden=false});
+
+let DB=null, DL=null, sessions={g1:{rows:[]},g2:{rows:[]}}, curSess="g1", unsub=null, saveTimer=null, dbWritable=true;
+const blankRows=n=>Array.from({length:n},(_,i)=>({code:"P"+String(i+1).padStart(2,"0"),avant:"",apres:""}));
+function ensureRows(s){if(!sessions[s]||!Array.isArray(sessions[s].rows)||!sessions[s].rows.length)sessions[s]={rows:blankRows(12)}}
+function setStoreNote(){
+  $("#ap-store").textContent=DB&&dbWritable?"Enregistrée en ligne : vous la retrouvez sur tous vos appareils.":"Enregistrée sur cet appareil seulement.";
+}
+function persist(){
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(async()=>{
+    const body={rows:sessions[curSess].rows,updated:new Date().toISOString()};
+    if(DB&&dbWritable){try{await DB.doc("sessions/"+curSess).set(body);return}catch(e){if(e&&e.code==="invalid_argument"){dbWritable=false;setStoreNote()}}}
+    store.set("cay-ap-"+curSess,body);
+  },600);
+}
+function validRow(s){return /^[1-4]{8}$/.test(s)}
+function renderGrid(){
+  ensureRows(curSess);const rows=sessions[curSess].rows;
+  $("#ap-grid").innerHTML=`<span class="h">Code</span><span class="h">En arrivant (8 chiffres)</span><span class="h">En repartant (8 chiffres)</span><span class="h">Total</span><span class="h">Écart</span>`+
+   rows.map((r,i)=>{const a=validRow(r.avant)?sum(r.avant.split("").map(Number)):null,b=validRow(r.apres)?sum(r.apres.split("").map(Number)):null;
+    return `<span class="mono">${esc(r.code)}</span>
+    <input type="text" inputmode="numeric" maxlength="8" id="g-${curSess}-${i}-a" data-i="${i}" data-k="avant" value="${esc(r.avant)}" class="${r.avant&&!validRow(r.avant)?"bad":""}" aria-label="${esc(r.code)} en arrivant">
+    <input type="text" inputmode="numeric" maxlength="8" id="g-${curSess}-${i}-b" data-i="${i}" data-k="apres" value="${esc(r.apres)}" class="${r.apres&&!validRow(r.apres)?"bad":""}" aria-label="${esc(r.code)} en repartant">
+    <span class="mono">${a??"–"} → ${b??"–"}</span><span class="mono ${a!=null&&b!=null?(b-a>0?"up":b-a<0?"down":""):""}">${a!=null&&b!=null?((b-a>0?"+":"")+(b-a)):"–"}</span>`}).join("");
+  $$("#ap-grid input").forEach(inp=>{
+    inp.addEventListener("input",()=>{inp.value=inp.value.replace(/[^1-4]/g,"").slice(0,8);sessions[curSess].rows[+inp.dataset.i][inp.dataset.k]=inp.value;inp.classList.toggle("bad",!!inp.value&&!validRow(inp.value));persist();renderSynth()});
+    inp.addEventListener("change",()=>renderGrid());
+  });
+  renderSynth();
+}
+function stats(){
+  const rows=sessions[curSess].rows;
+  const full=rows.filter(r=>validRow(r.avant)&&validRow(r.apres));
+  const anyA=rows.filter(r=>validRow(r.avant)),anyB=rows.filter(r=>validRow(r.apres));
+  const mean=(list,k,i)=>list.length?list.reduce((s,r)=>s+Number(r[k][i]),0)/list.length:null;
+  const per=ITEMS.map((_,i)=>({a:mean(full,"avant",i),b:mean(full,"apres",i)}));
+  const tot=(list,k)=>list.map(r=>sum(r[k].split("").map(Number)));
+  const lv=(arr)=>LEVELS.map(l=>arr.filter(t=>t>=l.min&&t<=l.max).length);
+  return {full,anyA,anyB,per,ta:tot(full,"avant"),tb:tot(full,"apres"),la:lv(tot(anyA,"avant")),lb:lv(tot(anyB,"apres"))};
+}
+const f1=x=>x==null?"–":x.toFixed(1).replace(".",",");
+function chartSvg(per){
+  const W=640,rowH=30,top=26,left=170,right=24,H=top+per.length*rowH+24,x=v=>left+(v-1)/3*(W-left-right);
+  let s=`<svg class="chart" viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Moyenne par item, arrivée et départ">`;
+  [1,2,3,4].forEach(v=>{s+=`<line x1="${x(v)}" y1="${top-6}" x2="${x(v)}" y2="${H-20}" stroke="var(--line)" stroke-width="1"/><text x="${x(v)}" y="${H-6}" text-anchor="middle">${v}</text>`});
+  s+=`<circle cx="${left}" cy="10" r="5" fill="var(--muted)"/><text x="${left+10}" y="14">arrivée</text><circle cx="${left+80}" cy="10" r="5" fill="var(--accent)"/><text x="${left+90}" y="14">départ</text>`;
+  per.forEach((p,i)=>{const y=top+i*rowH+rowH/2;s+=`<text x="0" y="${y+4}">${i+1}. ${esc(SHORT[i])}</text>`;
+    if(p.a!=null){s+=`<line x1="${x(p.a)}" y1="${y}" x2="${x(p.b)}" y2="${y}" stroke="var(--accent)" stroke-width="2" opacity=".5"/><circle cx="${x(p.a)}" cy="${y}" r="5" fill="var(--muted)"/><circle cx="${x(p.b)}" cy="${y}" r="6" fill="var(--accent)"/>`}});
+  return s+"</svg>";
+}
+function renderSynth(){
+  const st=stats(),n=st.full.length,box=$("#ap-synth");
+  if(!st.anyA.length&&!st.anyB.length){box.innerHTML=`<div class="sheet"><p class="note">La synthèse apparaît dès la première feuille saisie : moyenne par item, totaux et répartition par niveau.</p></div>`;return}
+  const ma=n?sum(st.ta)/n:null,mb=n?sum(st.tb)/n:null;
+  box.innerHTML=`<div class="sheet stack"><h3>${n} feuille${n>1?"s":""} complète${n>1?"s":""}</h3>
+   <p>Total moyen : <span class="mono">${f1(ma)}</span> en arrivant, <span class="mono">${f1(mb)}</span> en repartant, sur 32.</p>
+   <div class="scroll"><table class="cmp"><thead><tr><th>Niveau</th><th>En arrivant</th><th>En repartant</th></tr></thead><tbody>${LEVELS.map((l,i)=>`<tr><td>${l.name} <span class="note mono">${l.min}-${l.max}</span></td><td class="n">${st.la[i]}</td><td class="n">${st.lb[i]}</td></tr>`).join("")}</tbody></table></div>
+   ${n?chartSvg(st.per):""}
+   <p class="note">Écarts affichés bruts : le support ne fixe pas de seuil de progression. Les feuilles incomplètes comptent dans la répartition par niveau, pas dans les moyennes.</p></div>`;
+}
+function synthText(){
+  const st=stats(),n=st.full.length,lbl=$("#ap-sess").selectedOptions[0].textContent;
+  let t=`Auto-positionnement · ${lbl}\n${n} feuilles complètes\n`;
+  if(n)t+=`Total moyen : ${f1(sum(st.ta)/n)} → ${f1(sum(st.tb)/n)} / 32\n\nMoyenne par item (arrivée → départ)\n`+st.per.map((p,i)=>`${i+1}. ${SHORT[i]} : ${f1(p.a)} → ${f1(p.b)}`).join("\n");
+  t+=`\n\nRépartition par niveau (arrivée / départ)\n`+LEVELS.map((l,i)=>`${l.name} (${l.min}-${l.max}) : ${st.la[i]} / ${st.lb[i]}`).join("\n");
+  return t;
+}
+function csvText(){
+  const head=["session","code",...ITEMS.map((_,i)=>"arr_i"+(i+1)),...ITEMS.map((_,i)=>"dep_i"+(i+1)),"total_arr","total_dep","ecart"];
+  const lines=sessions[curSess].rows.filter(r=>r.avant||r.apres).map(r=>{const a=validRow(r.avant)?r.avant.split(""):Array(8).fill(""),b=validRow(r.apres)?r.apres.split(""):Array(8).fill("");
+    const ta=validRow(r.avant)?sum(a.map(Number)):"",tb=validRow(r.apres)?sum(b.map(Number)):"";return [curSess,r.code,...a,...b,ta,tb,(ta!==""&&tb!=="")?tb-ta:""].join(";")});
+  return "﻿"+[head.join(";"),...lines].join("\r\n");
+}
+$("#ap-addrow").addEventListener("click",()=>{const r=sessions[curSess].rows;r.push({code:"P"+String(r.length+1).padStart(2,"0"),avant:"",apres:""});persist();renderGrid()});
+$("#ap-copy").addEventListener("click",()=>copyText(synthText(),$("#ap-fb2")));
+$("#ap-csv").addEventListener("click",async()=>{
+  if(!DL)return;
+  try{await DL.save({filename:`auto-positionnement_${curSess}.csv`,data:csvText()});flash($("#ap-fb2"),"Fichier enregistré")}
+  catch(e){flash($("#ap-fb2"),e&&e.code==="declined"?"Téléchargement annulé":"Téléchargement impossible ici : utilisez « Copier la synthèse »",5000)}
+});
+function loadLocal(s){const v=store.get("cay-ap-"+s);if(v&&Array.isArray(v.rows))sessions[s]={rows:v.rows}}
+function subscribe(){
+  if(unsub){unsub();unsub=null}
+  if(!DB){loadLocal(curSess);renderGrid();return}
+  unsub=DB.doc("sessions/"+curSess).onSnapshot(snap=>{
+    if(snap.metadata&&snap.metadata.hasPendingWrites)return;
+    const d=snap.exists?snap.data():null;
+    if(d&&Array.isArray(d.rows)){
+      const focused=document.activeElement&&document.activeElement.closest&&document.activeElement.closest("#ap-grid");
+      sessions[curSess]={rows:d.rows.map(r=>({code:String(r.code||""),avant:String(r.avant||""),apres:String(r.apres||"")}))};
+      if(!focused)renderGrid();
+    }else{loadLocal(curSess);renderGrid()}
+  },()=>{DB=null;setStoreNote();loadLocal(curSess);renderGrid()});
+}
+$("#ap-sess").addEventListener("change",e=>{curSess=e.target.value;subscribe()});
+setStoreNote();loadLocal("g1");renderGrid();
+
+(async function(){
+  if(!window.claude||!window.claude.use)return;
+  try{
+    const user=await window.claude.use("user");
+    const admin=user?((await user.isOwner())||(await user.canEdit())):false;
+    if(admin){DB=await window.claude.use("db")}
+    DL=await window.claude.use("downloads");
+    $("#ap-csv").hidden=!DL;
+    setStoreNote();
+    if(DB)subscribe();
+  }catch(e){}
+})();
+
+/* =========================================================
+   2. R.C.T.F.C.
+   ========================================================= */
+const BRICKS=[
+ {k:"r",l:"R",n:"Rôle",d:"Qui l'IA doit être pour vous répondre",ph:"Tu es un assistant de structuration documentaire pour une cadre de santé."},
+ {k:"c",l:"C",n:"Contexte",d:"La situation, le service, ce qui a déjà été dit ou décidé",ph:"Le service connaît des tensions sur les transmissions entre équipes de jour et de nuit."},
+ {k:"t",l:"T",n:"Tâche",d:"Le verbe : ce que vous voulez qu'elle fasse, précisément",ph:"Prépare une note de cadrage factuelle pour une réunion d'équipe."},
+ {k:"f",l:"F",n:"Format",d:"La forme attendue : rubriques, longueur, tableau",ph:"Restitue en 500 mots maximum, avec des rubriques courtes."},
+ {k:"x",l:"C",n:"Contraintes",d:"Ce qu'elle n'a pas le droit de faire",ph:"N'invente aucune donnée, cause, décision ni recommandation. Quand tu ne peux pas conclure, écris « à vérifier »."}
+];
+// 🟠 Découpage en briques proposé à partir des quatre demandes modèles du carnet (page 4) ; texte du carnet conservé.
+const MODELS={
+ synthese:{r:"Tu es un assistant de structuration documentaire pour une cadre de santé.",c:"À partir du corpus fourni :",t:"prépare une note de cadrage factuelle pour une réunion d'équipe. Distingue : faits objectivés, difficultés ou perceptions exprimées, risques ou points de vigilance, décisions déjà actées, données manquantes ou questions à investiguer.",f:"Restitue en 500 mots maximum, avec des rubriques courtes.",x:"N'invente aucune donnée, cause, décision, responsabilité ou recommandation. Quand le corpus ne permet pas de conclure, écris « à vérifier »."},
+ reunion:{r:"Tu aides une cadre de santé à préparer une réunion de régulation de 45 minutes sur les transmissions entre équipes.",c:"L'objectif est de partager les faits, comprendre les irritants organisationnels, choisir un test d'amélioration et décider de son suivi.",t:"Propose un ordre du jour minuté avec une ouverture non accusatoire, des questions d'animation ouvertes, une phase de décision et une clôture.",f:"",x:"Ne désigne aucune personne responsable et n'invente aucune information."},
+ plan:{r:"",c:"[Collez ici les décisions de la réunion, sans aucun nom.]",t:"Transforme les décisions ci-dessous en tableau de suivi",f:"avec : enjeu, résultat attendu, action formulée avec un verbe, pilote, contributeurs, échéance, dépendances, risques, indicateur, statut, point de revue et point à clarifier.",x:"Ne crée aucune information non fournie. Si un élément manque, écris « à définir en réunion de suivi ». Mets en évidence les décisions trop imprécises pour être mises en œuvre."},
+ message:{r:"",c:"",t:"Rédige un message bref à une équipe pour présenter une expérimentation limitée d'un assistant IA autorisé.",f:"Le message doit préciser : finalité concrète, périmètre, données exclues, relecture et responsabilité humaine, durée du test, possibilité de signaler un problème et date de bilan. Le ton est transparent, non défensif et adapté à une équipe hospitalière.",x:"N'affirme pas que l'outil supprimera des postes, fera automatiquement gagner du temps ou garantira l'absence d'erreur."}
+};
+$("#rc-bricks").innerHTML=BRICKS.map(b=>`<div class="brick"><div class="letter" aria-hidden="true">${b.l}<small>${b.n}</small></div>
+  <label class="fl" for="rc-${b.k}"><span>${b.n} <span class="note" style="font-weight:400">· ${b.d}</span></span><textarea id="rc-${b.k}" rows="2" placeholder="${esc(b.ph)}"></textarea></label></div>`).join("");
+$("#rc-meter").innerHTML=BRICKS.map(()=>"<span></span>").join("");
+const RED=[
+ {re:/\b(M\.|Mme|Mlle|Monsieur|Madame|Dr\.?|Docteur|Pr\.?)\s+[A-ZÀ-Ý][\p{L}'-]+/u,m:"Une personne désignée par sa civilité et son nom"},
+ {re:/\b(né|née|nés|nées)\s+(le|en)\b/i,m:"Une date ou une année de naissance"},
+ {re:/\b\d{1,2}[\/.-]\d{1,2}[\/.-](19|20)?\d{2}\b/,m:"Une date précise (date de naissance, d'arrêt, d'entretien ?)"},
+ {re:/\b[12][\s.]?\d{2}[\s.]?\d{2}[\s.]?\d{2}[\s.]?\d{3}[\s.]?\d{3}(?:[\s.]?\d{2})?\b/,m:"Un numéro qui ressemble à un numéro de sécurité sociale"},
+ {re:/\b\d{6,}\b/,m:"Un numéro long (IPP, numéro de dossier ?)"},
+ {re:/\bIPP\b|s[ée]curit[ée] sociale|\bNIR\b|num[ée]ro de dossier/i,m:"Un identifiant patient ou de sécurité sociale"},
+ {re:/[\w.+-]+@[\w-]+\.[\w.]+/,m:"Une adresse électronique"},
+ {re:/\b0[1-9](?:[\s.]?\d{2}){4}\b|\+594|\+33\s?\d/,m:"Un numéro de téléphone"},
+ {re:/\b(diagnostic|pathologie|cancer|VIH|s[ée]ropositi|d[ée]pression|psychiatri|r[ée]sultat d'examen|bilan sanguin|chimioth[ée]rapie|grossesse)\b/i,m:"Une information de santé (diagnostic, pathologie, résultat)"},
+ {re:/\b(arr[êe]t maladie|cong[ée] maladie|disciplinaire|sanction|avertissement|bl[âa]me)\b/i,m:"Un élément de situation individuelle (maladie, discipline)"},
+ {re:/\b\d{1,4}\s?(bis|ter)?\s?,?\s(rue|avenue|bd|boulevard|chemin|route|impasse|lotissement|r[ée]sidence)\b/i,m:"Une adresse postale"}
+];
+function rcAll(){const o={};BRICKS.forEach(b=>{o[b.k]=$("#rc-"+b.k).value.trim()});return o}
+function rcRender(){
+  const v=rcAll();const filled=BRICKS.filter(b=>v[b.k]);
+  $$("#rc-meter span").forEach((s,i)=>s.classList.toggle("on",!!v[BRICKS[i].k]));
+  $("#rc-count").textContent=filled.length+" / 5 briques";
+  const text=BRICKS.map(b=>v[b.k]).filter(Boolean).join("\n\n");
+  $("#rc-out").textContent=text||"Remplissez les briques : votre demande s'assemble ici.";
+  const all=Object.values(v).join("\n");const hits=[];
+  RED.forEach(r=>{if(r.re.test(all)&&!hits.includes(r.m))hits.push(r.m)});
+  const al=$("#rc-alert");
+  if(hits.length){al.hidden=false;al.innerHTML=`<strong>À retirer avant de copier : cela ressemble à la liste rouge.</strong><ul>${hits.map(h=>`<li>${esc(h)}</li>`).join("")}</ul><p style="margin-top:8px">Le réflexe : décrire la situation sans désigner la personne. « Prépare l'entretien d'un agent de catégorie C, plus de 10 ans d'ancienneté, avec des absences récurrentes à analyser. »</p>`}
+  else al.hidden=true;
+  const hn=$("#rc-hint");const tips=[];
+  if(filled.length&&!v.x)tips.push("La contrainte est la brique que tout le monde oublie, et c'est celle qui protège. Sans elle, l'IA comble les trous avec ce qui semble plausible.");
+  if(filled.length&&!v.f)tips.push("Aucun format demandé : précisez la forme attendue (rubriques, longueur, tableau).");
+  if(filled.length&&!v.t)tips.push("Aucune tâche : écrivez le verbe, ce que vous voulez qu'elle fasse.");
+  hn.hidden=!tips.length;hn.innerHTML=tips.map(t=>`<p>${esc(t)}</p>`).join("");
+  $("#rc-copy").disabled=!text;
+}
+BRICKS.forEach(b=>$("#rc-"+b.k).addEventListener("input",rcRender));
+$$("[data-model]").forEach(btn=>btn.addEventListener("click",()=>{const m=MODELS[btn.dataset.model];BRICKS.forEach(b=>{$("#rc-"+b.k).value=m[b.k]||""});rcRender()}));
+$("#rc-clear").addEventListener("click",()=>{BRICKS.forEach(b=>{$("#rc-"+b.k).value=""});rcRender()});
+$("#rc-copy").addEventListener("click",()=>{const v=rcAll();copyText(BRICKS.map(b=>v[b.k]).filter(Boolean).join("\n\n"),$("#rc-fb"))});
+rcRender();
+
+/* =========================================================
+   3. FAIT / AVIS / INVENTÉ
+   src: "guide" = clé de débrief, partie 5 du guide ; "jls" = classement proposé, à valider
+   ========================================================= */
+const CATS={fait:"Fait vérifiable",trompeur:"Exact mais trompeur",avis:"Avis présenté comme un fait",invente:"Inventé"};
+const SHEETS=[
+ {id:"f02",label:"Note de cadrage",atelier:"Atelier 02",
+  ask:"Tu es un assistant de structuration documentaire pour une cadre de santé. À partir du corpus fourni, prépare une note de cadrage factuelle pour une réunion d'équipe. Distingue : faits objectivés, difficultés ou perceptions exprimées, risques ou points de vigilance, décisions déjà actées, données manquantes ou questions à investiguer. N'invente aucune donnée, cause, décision, responsabilité ou recommandation. Quand le corpus ne permet pas de conclure, écris « à vérifier ». Restitue en 500 mots maximum, avec des rubriques courtes. [corpus de l'unité B2 joint : tableau d'indicateurs, verbatim, note de direction, compte rendu]",
+  corpus:"ind",
+  segs:[
+   {rub:"Faits objectivés",t:"L'absentéisme de courte durée a augmenté de 54 % entre septembre et janvier.",c:"trompeur",src:"guide",e:"Exact en calcul, trompeur en lecture : de 6,1 à 9,4, c'est 3,3 points. Faites discuter les deux présentations."},
+   {rub:"Faits objectivés",t:"Les heures supplémentaires ont suivi la même tendance, passant de 112 à 188 heures.",c:"fait",src:"jls",e:"Les deux chiffres figurent au tableau (septembre et janvier)."},
+   {rub:"Faits objectivés",t:"Les admissions arrivées après 19 h sont passées de 11 à 17 par mois.",c:"invente",src:"jls",e:"Le tableau compte les admissions après 18 h, pas après 19 h. Les chiffres sont justes, le seuil est déformé."},
+   {rub:"Faits objectivés",t:"Les incidents de transmission ont doublé sur la période.",c:"trompeur",src:"guide",e:"L'indicateur mesure la déclaration, pas le phénomène : les incidents sont déclarés volontairement, et la cadre l'a noté. À vérifier."},
+   {rub:"Faits objectivés",t:"Le mois de décembre montre une amélioration nette sur l'ensemble des indicateurs, ce qui confirme que la situation peut être redressée.",c:"trompeur",src:"guide",e:"En décembre, 8 lits sur 28 étaient fermés trois semaines pour travaux. Ce n'est pas une amélioration."},
+   {rub:"Difficultés et perceptions",t:"Les agents de nuit estiment que le nouvel outil de planning déployé en janvier est à l'origine de la dégradation.",c:"invente",src:"guide",e:"Ce propos vient d'une seule personne, de l'équipe de jour : l'IA a fabriqué un groupe. Et la cause est une coïncidence de calendrier : deux agents de nuit expérimentés sont partis fin novembre."},
+   {rub:"Difficultés et perceptions",t:"L'équipe de jour signale que la nuit ne lit pas toujours les transmissions, ce qui explique les oublis constatés.",c:"avis",src:"guide",e:"Une opinion enregistrée comme un fait, dite par des agents de jour en l'absence de la nuit. « Ce qui explique » ajoute une cause."},
+   {rub:"Difficultés et perceptions",t:"Le téléphone pendant les transmissions est identifié comme une cause majeure de dispersion.",c:"avis",src:"jls",e:"Le compte rendu rapporte que « plusieurs personnes ont dit » que c'était le vrai problème. L'IA en fait une cause établie."},
+   {rub:"Risques et points de vigilance",t:"La hausse de l'absentéisme risque de se poursuivre si aucune action n'est engagée.",c:"avis",src:"jls",e:"Une prévision de l'IA, que rien dans le corpus ne fonde."},
+   {rub:"Risques et points de vigilance",t:"Le manque de formation des nouveaux arrivants et le déficit de communication entre équipes aggravent la situation.",c:"invente",src:"guide",e:"Des causes proposées d'elle-même : aucune n'est dans le corpus."},
+   {rub:"Décisions déjà actées",t:"Une nouvelle trame de transmissions sera testée à partir du mois prochain.",c:"invente",src:"jls",e:"Aucune date dans le compte rendu. La note manuscrite de la cadre dit que la version du volontaire n'a été vue par personne."},
+   {rub:"Décisions déjà actées",t:"Un rappel sera diffusé sur les admissions tardives. L'accueil des nouveaux arrivants sera revu.",c:"trompeur",src:"guide",e:"Décidé en janvier, mais la note manuscrite de la cadre dit « pas fait » et « personne d'identifié ». L'IA a fait disparaître cette note, l'information la plus utile du compte rendu."},
+   {rub:"Données manquantes",t:"Aucune donnée comparable n'est disponible pour les autres unités.",c:"fait",src:"jls",e:"C'est une remarque de la cadre au bas du tableau."}
+  ],
+  missing:"Ce que la note aurait dû marquer « à vérifier » : la cause de la hausse de janvier, la fiabilité du compte des incidents, et ce que pense l'équipe de nuit, absente de la réunion. Une bonne note en contient au moins trois."},
+ {id:"f04",label:"Plan d'action",atelier:"Atelier 04",
+  ask:"Transforme les décisions de ce compte rendu en tableau de plan d'action. [extrait du compte rendu de la réunion de janvier joint]",
+  corpus:"cr",
+  segs:[
+   {rub:"Action 1",t:"Déployer une nouvelle trame de transmissions · pilote : l'agent volontaire.",c:"trompeur",src:"jls",e:"Le compte rendu dit « tester », pas « déployer ». Le pilote est juste : un agent de jour s'est porté volontaire."},
+   {rub:"Action 1",t:"Échéance : 31 mars · indicateur : satisfaction de l'équipe · statut : en cours.",c:"invente",src:"guide",e:"Toutes les dates sont inventées : le compte rendu n'en contient aucune. « Satisfaction de l'équipe » est impossible à produire dans une unité de 28 lits."},
+   {rub:"Action 2",t:"Diffuser un rappel sur les admissions tardives · pilote : la cadre · échéance : 15 mars.",c:"invente",src:"guide",e:"Le compte rendu ne dit ni qui, ni à qui, ni sous quelle forme. « Rappel » n'est pas une action. La date est inventée."},
+   {rub:"Action 2",t:"Indicateur : nombre de rappels diffusés.",c:"trompeur",src:"jls",e:"Il compte l'activité, pas l'effet attendu : des admissions après 18 h mieux annoncées."},
+   {rub:"Action 3",t:"Refondre le parcours d'accueil des nouveaux arrivants · pilote : le référent formation · échéance : 30 avril.",c:"invente",src:"guide",e:"« Le référent formation » n'existe pas : le compte rendu dit « quelqu'un ». Cette décision doit rester « à définir en réunion de suivi »."},
+   {rub:"Action 4",t:"Organiser une communication à l'équipe · pilote : la cadre · sous quinzaine.",c:"trompeur",src:"jls",e:"La cadre a bien dit qu'elle donnerait un retour rapide. Mais le compte rendu ne donne ni date, ni support, ni contenu."},
+   {rub:"Action 5",t:"Réduire l'absentéisme de courte durée de 20 %.",c:"invente",src:"guide",e:"Jamais décidé : c'est un objectif que l'IA s'est donné toute seule."},
+   {rub:"Conclusion",t:"Le plan couvre l'ensemble des décisions prises en réunion. Les cinq actions sont prioritaires et peuvent être lancées simultanément.",c:"avis",src:"jls",e:"Un jugement de l'IA. Le plan oublie le suivi à six semaines demandé par la direction."}
+  ],
+  missing:"La dépendance cachée : la note de la direction annonce un projet d'harmonisation des trames « à l'étude au niveau de l'établissement », sans calendrier. Tester une trame locale sans le savoir, c'est risquer un travail perdu. Le suivi à six semaines est une contrainte de la direction : il apparaît comme échéance et comme point de revue."},
+ {id:"f05",label:"Message à l'équipe",atelier:"Atelier 05",
+  ask:"Écris un message à mon équipe pour annoncer qu'on va utiliser l'IA.",
+  corpus:null,
+  segs:[
+   {rub:"Objet",t:"L'intelligence artificielle arrive dans notre unité.",c:"avis",src:"jls",e:"Le ton de l'annonce d'un fait accompli, avant toute explication."},
+   {rub:"Paragraphe 1",t:"Comme vous le savez, l'intelligence artificielle transforme aujourd'hui tous les métiers, et l'hôpital n'y échappera pas.",c:"avis",src:"guide",e:"L'inévitable ferme la discussion avant qu'elle commence."},
+   {rub:"Paragraphe 2",t:"À partir du mois prochain, j'utiliserai un assistant intelligent pour préparer nos réunions et rédiger nos comptes rendus.",c:"fait",src:"jls",e:"La seule information concrète du message. Il y manque le périmètre, les données exclues, la relecture et la durée du test."},
+   {rub:"Paragraphe 2",t:"Cet outil nous fera gagner un temps précieux, estimé à plusieurs heures par semaine, que nous pourrons consacrer aux patients.",c:"invente",src:"guide",e:"Une promesse de temps gagné, que l'équipe vérifiera."},
+   {rub:"Paragraphe 3",t:"Je tiens à vous rassurer : il n'y a aucune inquiétude à avoir.",c:"avis",src:"guide",e:"Une réponse défensive, qui balaie la crainte au lieu de l'écouter. C'est la phrase censée rassurer qui inquiète le plus."},
+   {rub:"Paragraphe 3",t:"L'outil est parfaitement sécurisé et ne commet pas d'erreur.",c:"invente",src:"guide",e:"Faux, et c'est ce que la formation démonte depuis deux jours."},
+   {rub:"Paragraphe 3",t:"Personne ne sera remplacé, et votre travail ne sera pas surveillé.",c:"avis",src:"jls",e:"Des assurances que le cadre ne maîtrise pas, données sans qu'on les ait demandées : elles font naître la crainte qu'elles écartent."},
+   {rub:"Conclusion",t:"Je compte sur l'adhésion de chacun pour faire de ce projet une réussite collective.",c:"avis",src:"jls",e:"L'adhésion est demandée avant que l'équipe sache sur quoi elle porte."}
+  ],
+  missing:"Rien sur le périmètre, les données exclues, la relecture, la durée du test ni le bilan : les six phrases attendues sont toutes absentes. Question pour ouvrir le débrief : « Qu'est-ce qui se passe dans la tête de l'agent qui lit ce message ? »"}
+];
+const IND=[["Absentéisme de courte durée (%)","6,1","6,4","7,2","6,8","9,4","8,9"],["Heures supplémentaires (h)","112","126","141","98","188","176"],["Taux d'occupation (%)","94","96","95","88","97","96"],["Admissions après 18 h","11","13","14","9","17","19"],["Sorties après 14 h","14","15","18","12","21","22"],["Incidents de transmission déclarés","3","4","5","4","8","9"],["Irritants remontés à la cadre","4","5","7","5","10","11"]];
+const CORPUS={
+ ind:`<table class="ind"><thead><tr><th>Indicateur</th><th>Sept.</th><th>Oct.</th><th>Nov.</th><th>Déc.</th><th>Janv.</th><th>Févr.</th></tr></thead><tbody>${IND.map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table>
+  <p class="note">Remarques de la cadre : nouvel outil de planning déployé la première semaine de janvier. Deux agents de nuit expérimentés ont quitté l'unité fin novembre. Les incidents de transmission dépendent de ce que les agents déclarent. Pas de données comparables pour les autres unités. En décembre, 20 lits ouverts au lieu de 28 pendant trois semaines.</p>
+  <p class="note">Propos d'agents (extraits) : V3, équipe de jour : « Depuis janvier, c'est nettement pire. Je pense que c'est le nouveau planning. » Compte rendu de janvier, en l'absence de l'équipe de nuit : « la nuit ne lit pas toujours les transmissions du jour ».</p>`,
+ cr:`<p><strong>Compte rendu de janvier, point 3.</strong> Il a été convenu de tester une nouvelle trame de transmissions. Un agent de jour s'est porté volontaire pour la préparer. Il a aussi été décidé de faire un rappel sur les admissions tardives. Il faudra revoir l'accueil des nouveaux arrivants. Quelqu'un s'en occupera. La cadre a dit qu'elle donnerait un retour rapide à l'équipe.</p>
+  <p><strong>Point 4.</strong> La direction attend un suivi à six semaines sur la fluidité des parcours. Prochaine réunion : à fixer.</p>
+  <p><strong>Note manuscrite de la cadre, fin février.</strong> « Trame : le volontaire a fait une version, personne ne l'a vue. Rappel admissions : pas fait. Accueil nouveaux : personne d'identifié. Retour à l'équipe : pas fait. Six semaines : c'est dans dix jours. »</p>
+  <p><strong>Note de la direction, 3 mars.</strong> Plan d'action attendu avec mesures, responsables, calendrier et premier point de suivi à six semaines, à articuler avec le projet d'harmonisation des trames à l'étude au niveau de l'établissement, calendrier communiqué ultérieurement.</p>`
+};
+let exCur="f02";const exAns={};const exShown={};
+$("#ex-pick").innerHTML=SHEETS.map(s=>`<button type="button" data-s="${s.id}" aria-pressed="${s.id===exCur}">${s.label}</button>`).join("");
+$$("#ex-pick button").forEach(b=>b.addEventListener("click",()=>{exCur=b.dataset.s;$$("#ex-pick button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));renderEx()}));
+function renderEx(){
+  const s=SHEETS.find(x=>x.id===exCur);exAns[s.id]=exAns[s.id]||{};const ans=exAns[s.id],shown=!!exShown[s.id];
+  let h=`<p class="note">${s.atelier} · annexe C du guide du formateur</p>`;
+  if(s.corpus)h+=`<details><summary>Les sources à confronter</summary><div>${CORPUS[s.corpus]}</div></details>`;
+  h+=`<div class="chatbox"><div class="who">Ce que le manager a écrit</div><div class="ask">${esc(s.ask)}</div><div class="who">Ce que l'assistant a répondu</div>`;
+  s.segs.forEach((g,i)=>{
+    const a=ans[i];const ok=a===g.c;
+    h+=`<div class="segm"><div class="txt"><span class="rub">${esc(g.rub)}</span>${esc(g.t)}</div>
+     <div class="cats" role="group" aria-label="Classer ce passage">${Object.keys(CATS).map(k=>`<button type="button" data-i="${i}" data-c="${k}" aria-pressed="${a===k}">${CATS[k]}</button>`).join("")}</div>
+     ${shown?`<div class="verdict ${a?(ok?"ok":"ko"):""}"><strong>${CATS[g.c]}</strong>${a?(ok?" · bien vu":" · vous aviez « "+CATS[a]+" »"):""}<span class="tag">${g.src==="guide"?"guide":"à valider"}</span><br>${esc(g.e)}</div>`:""}</div>`;
+  });
+  h+=`</div>`;
+  const n=s.segs.length,done=Object.keys(ans).length,good=s.segs.filter((g,i)=>ans[i]===g.c).length;
+  h+=`<div class="row"><button type="button" class="btn primary" id="ex-show">${shown?"Masquer la correction":"Afficher la correction"}</button><button type="button" class="btn" id="ex-reset">Recommencer</button><span class="note mono">${done} / ${n} classés</span></div>`;
+  if(shown)h+=`<div class="sheet stack"><div class="row"><span class="score">${good} / ${n}</span><span class="note">passages bien classés</span></div><p>${esc(s.missing)}</p></div>`;
+  $("#ex-body").innerHTML=h;
+  $$("#ex-body .cats button").forEach(b=>b.addEventListener("click",()=>{ans[b.dataset.i]=b.dataset.c;renderEx()}));
+  $("#ex-show").addEventListener("click",()=>{exShown[s.id]=!shown;renderEx()});
+  $("#ex-reset").addEventListener("click",()=>{exAns[s.id]={};exShown[s.id]=false;renderEx()});
+}
+renderEx();
+
+/* =========================================================
+   4. JEU DE RÔLE · ATELIER 05 (annexes B3 et B4)
+   ========================================================= */
+const RCARDS=[
+ {t:"« Et nos données, elles vont où ? »",pos:"Vous n'êtes pas contre, mais vous voulez savoir ce qui sort du service et où ça atterrit.",first:"« Quand vous tapez une note dans ce truc, elle part sur quel serveur ? Et qui peut la lire ? »",fear:"Qu'un élément identifiant d'un agent ou d'un patient se retrouve chez un éditeur, et que ce soit vous qu'on vienne voir.",calm:"Une liste claire de ce qui n'entre jamais, le nom de l'outil autorisé par l'établissement, et le nom de la personne à qui poser la question.",not:"Vous ne refusez pas en bloc. Vous insistez jusqu'à obtenir une réponse précise."},
+ {t:"« C'est pour nous surveiller »",pos:"Vous pensez que l'outil servira tôt ou tard à mesurer le travail de chacun, même si ce n'est pas dit aujourd'hui.",first:"« On commence par les comptes rendus, et dans six mois on nous sortira des statistiques sur qui fait quoi. »",fear:"Perdre la marge d'appréciation qui rend le travail tenable.",calm:"Que le cadre dise ce que le test ne fera pas, qu'il annonce une durée limitée, et qu'il accepte qu'on l'arrête.",not:"Vous ne prêtez pas d'intention personnelle au cadre. Votre méfiance vise l'institution, pas lui."},
+ {t:"« Encore quelque chose en plus à faire »",pos:"Vous êtes fatigué. Toute nouveauté est d'abord une charge supplémentaire, et on vous en annonce trois par an.",first:"« On n'a déjà pas le temps de remplir ce qu'on doit remplir. »",fear:"Qu'on vous demande d'apprendre un outil sur votre temps, et que l'ancien travail reste à faire en plus.",calm:"Que le test porte sur le travail du cadre, pas sur le vôtre, et que rien ne vous soit demandé de plus pendant le mois.",not:"Vous ne bloquez pas les autres. Si on répond à votre point, vous laissez faire."},
+ {t:"« Ça se trompe, j'en ai vu des exemples »",pos:"Vous avez essayé un assistant chez vous. Il vous a donné une réponse fausse, écrite avec assurance. Vous n'avez pas confiance.",first:"« J'ai posé une question simple, il m'a inventé une réponse. Comment on saura que ce qu'il écrit est juste ? »",fear:"Qu'une erreur passe dans un document officiel et que personne ne la voie.",calm:"Que le cadre dise qu'il relit tout, qu'il donne un exemple d'erreur qu'il a déjà attrapée, et qu'il ne prétende pas que l'outil est fiable.",not:"Vous ne partez pas dans une démonstration technique."},
+ {t:"« Si la machine rédige, je sers à quoi ? »",pos:"Vous êtes le plus expérimenté de l'équipe. Ce que vous savez faire tient en partie à votre façon d'écrire et de transmettre.",first:"« Ce que je fais bien, c'est justement ça. Si l'outil le fait, on garde quoi de notre métier ? »",fear:"Que la compétence se déplace vers l'outil, et qu'on vous le fasse sentir.",calm:"Que le cadre nomme ce que l'outil ne fera jamais : décider, arbitrer, connaître l'équipe, assumer.",not:"Vous ne parlez pas de suppression de poste : ce n'est pas le sujet, et ça ferait dérailler la scène."}
+];
+const ROTA=[[1,2,3,4],[2,3,4,1],[3,4,1,2],[4,1,2,3]];
+const OBS_OK=["La finalité : quelle tâche précise est concernée.","Ce que l'outil fait.","Ce que l'outil ne fait pas.","Les informations qui n'y entrent jamais.","Qui relit et qui valide avant diffusion.","Comment on saura si ça a marché.","La durée du test est annoncée.","Un critère d'arrêt est annoncé : à quelle condition on s'arrête.","L'équipe sait à qui dire qu'elle n'est pas d'accord."];
+const OBS_KO=["A promis du temps gagné sans dire comment il le mesurera.","A présenté l'IA comme inévitable.","A répondu de façon défensive à une objection.","A noyé l'équipe sous l'information.","A laissé croire que ce que l'outil produit est automatiquement juste."];
+let ro={tour:0,used:{1:[],2:[],3:[],4:[]},draw:{},obs:{},log:[]};
+(function(){const s=store.get("cay-ro");if(s&&s.used&&s.draw&&Array.isArray(s.log))ro=Object.assign(ro,s)})();
+const roSave=()=>store.set("cay-ro",ro);
+function drawFor(tour){
+  if(ro.draw[tour])return ro.draw[tour];
+  const [,pa,pb]=ROTA[tour];const pick=(p,exclude)=>{const pool=[0,1,2,3,4].filter(i=>!ro.used[p].includes(i)&&i!==exclude);const src=pool.length?pool:[0,1,2,3,4].filter(i=>i!==exclude);return src[Math.floor(Math.random()*src.length)]};
+  const a=pick(pa,-1),b=pick(pb,a);ro.used[pa].push(a);ro.used[pb].push(b);ro.draw[tour]={a,b};roSave();return ro.draw[tour];
+}
+function cardHtml(who,p,ci){const c=RCARDS[ci];return `<div class="rcard"><span class="eyebrow">${who} · Personne ${p}</span>
+  <div class="back" id="back-${who}"><p class="note">Seul le joueur regarde sa carte.</p><button type="button" class="btn" data-flip="${who}">Voir ma carte</button></div>
+  <div id="face-${who}" hidden><h3>${esc(c.t)}</h3><dl><dt>Votre position</dt><dd>${esc(c.pos)}</dd><dt>Votre première phrase</dt><dd>${esc(c.first)}</dd><dt>La crainte derrière</dt><dd>${esc(c.fear)}</dd><dt>Ce qui vous rassure</dt><dd>${esc(c.calm)}</dd><dt>Ce que vous ne faites pas</dt><dd>${esc(c.not)}</dd></dl>
+  <button type="button" class="btn ghost" data-flip="${who}">Cacher ma carte</button></div></div>`}
+function renderRoles(){
+  $("#ro-tours").innerHTML=[0,1,2,3].map(i=>`<button type="button" data-tour="${i}" aria-pressed="${i===ro.tour}">${i+1}</button>`).join("");
+  $$("#ro-tours button").forEach(b=>b.addEventListener("click",()=>{ro.tour=+b.dataset.tour;ro.obs={};roSave();resetTimer();renderRoles()}));
+  const r=ROTA[ro.tour];
+  $("#ro-rota").innerHTML=[["Le cadre",r[0]],["Membre A",r[1]],["Membre B",r[2]],["L'observateur",r[3]]].map(([k,v])=>`<div><div class="k">${k}</div><div class="v">Personne ${v}</div></div>`).join("");
+  const d=drawFor(ro.tour);
+  $("#ro-cards").innerHTML=cardHtml("A",r[1],d.a)+cardHtml("B",r[2],d.b);
+  $$("[data-flip]").forEach(b=>b.addEventListener("click",()=>{const w=b.dataset.flip;const f=$("#face-"+w),k=$("#back-"+w);const show=f.hidden;f.hidden=!show;k.hidden=show}));
+  let o=`<span class="h">Ce qui a été clairement expliqué</span>`;
+  OBS_OK.forEach((q,i)=>{o+=obsRow("ok"+i,q)});
+  o+=`<span class="h">Les cinq pièges · une case « vu » est un point à corriger</span>`;
+  OBS_KO.forEach((q,i)=>{o+=obsRow("ko"+i,q)});
+  $("#ro-obs").innerHTML=o;
+  $$("#ro-obs [data-o]").forEach(b=>b.addEventListener("click",()=>{ro.obs[b.dataset.o]=b.dataset.v;roSave();$$(`#ro-obs [data-o="${b.dataset.o}"]`).forEach(x=>x.setAttribute("aria-pressed",String(x.dataset.v===ro.obs[b.dataset.o])))}));
+  renderLog();
+}
+function obsRow(id,q){const v=ro.obs[id];return `<span>${esc(q)}</span><span class="vu" role="group" aria-label="${esc(q)}"><button type="button" data-o="${id}" data-v="vu" aria-pressed="${v==="vu"}">Vu</button><button type="button" data-o="${id}" data-v="pas" aria-pressed="${v==="pas"}">Pas vu</button></span>`}
+function renderLog(){
+  $("#ro-log").innerHTML=ro.log.length?ro.log.map(l=>`<div class="note"><strong>Tour ${l.tour}</strong> · Personne ${l.cadre} en cadre · ${l.ok} / 9 expliqués · ${l.ko} piège${l.ko>1?"s":""} sur 5${l.best?" · « "+esc(l.best)+" »":""}</div>`).join(""):"";
+}
+$("#ro-next").addEventListener("click",()=>{
+  const ok=OBS_OK.filter((_,i)=>ro.obs["ok"+i]==="vu").length,ko=OBS_KO.filter((_,i)=>ro.obs["ko"+i]==="vu").length;
+  const r=ROTA[ro.tour];
+  const entry={tour:ro.tour+1,cadre:r[0],ok,ko,miss:OBS_OK.filter((_,i)=>ro.obs["ok"+i]!=="vu"),traps:OBS_KO.filter((_,i)=>ro.obs["ko"+i]==="vu"),best:$("#ro-best").value.trim(),left:$("#ro-left").value.trim()};
+  ro.log=ro.log.filter(l=>l.tour!==entry.tour);ro.log.push(entry);ro.log.sort((a,b)=>a.tour-b.tour);
+  flash($("#ro-fb"),"Tour "+entry.tour+" enregistré");
+  $("#ro-best").value="";$("#ro-left").value="";
+  if(ro.tour<3){ro.tour++;ro.obs={};resetTimer()}
+  roSave();renderRoles();
+});
+$("#ro-copy").addEventListener("click",()=>{
+  if(!ro.log.length){flash($("#ro-fb"),"Aucun tour enregistré");return}
+  const t="Atelier 05 · bilan des tours\n\n"+ro.log.map(l=>`Tour ${l.tour} · Personne ${l.cadre} en cadre\nExpliqué clairement : ${l.ok} / 9\nNon expliqué : ${l.miss.length?l.miss.join(" ; "):"rien"}\nPièges : ${l.traps.length?l.traps.join(" ; "):"aucun"}\nRéponse la plus claire : ${l.best||"–"}\nObjection restée sans réponse : ${l.left||"–"}`).join("\n\n");
+  copyText(t,$("#ro-fb"));
+});
+$("#ro-reset").addEventListener("click",()=>{ro={tour:0,used:{1:[],2:[],3:[],4:[]},draw:{},obs:{},log:[]};roSave();resetTimer();renderRoles();flash($("#ro-fb"),"Nouveau groupe : cartes retirées")});
+
+/* Minuteur : 3 min de présentation + 4 min de questions */
+const PRES=180,TOTAL=420;let tStart=null,tElapsed=0,tInt=null,lock=null,phase2Played=false;
+function beep(){try{const A=window.AudioContext||window.webkitAudioContext;if(!A)return;const ctx=beep.ctx||(beep.ctx=new A());const o=ctx.createOscillator(),g=ctx.createGain();o.frequency.value=660;g.gain.value=.08;o.connect(g);g.connect(ctx.destination);o.start();o.stop(ctx.currentTime+.35)}catch(e){}}
+function fmt(s){s=Math.max(0,Math.ceil(s));return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0")}
+function tick(){
+  const el=tElapsed+(tStart?(Date.now()-tStart)/1000:0);
+  const left=TOTAL-el;$("#ro-time").textContent=fmt(left);$("#ro-bar").style.width=Math.min(100,el/TOTAL*100)+"%";
+  if(el<PRES)$("#ro-phase").textContent="Présentation du cadre · encore "+fmt(PRES-el);
+  else if(el<TOTAL){$("#ro-phase").textContent="Questions de l'équipe · encore "+fmt(left);if(!phase2Played){phase2Played=true;beep()}}
+  else{$("#ro-phase").textContent="Temps écoulé · l'observateur complète sa grille";stopTimer(true);beep()}
+}
+async function startTimer(){
+  if(tStart)return;tStart=Date.now();tInt=setInterval(tick,250);$("#ro-start").textContent="Pause";
+  try{if(navigator.wakeLock)lock=await navigator.wakeLock.request("screen")}catch(e){lock=null}
+}
+function stopTimer(done){
+  if(tStart){tElapsed+=(Date.now()-tStart)/1000;tStart=null}
+  clearInterval(tInt);tInt=null;$("#ro-start").textContent=done?"Terminé":"Reprendre";
+  if(lock){try{lock.release()}catch(e){}lock=null}
+}
+function resetTimer(){stopTimer();tElapsed=0;phase2Played=false;$("#ro-start").textContent="Démarrer";$("#ro-time").textContent="07:00";$("#ro-bar").style.width="0%";$("#ro-phase").textContent="Prêt · 7 minutes"}
+$("#ro-start").addEventListener("click",()=>{if(tElapsed>=TOTAL)return;if(tStart)stopTimer();else{beep.ctx||beep();startTimer()}});
+$("#ro-stop").addEventListener("click",resetTimer);
+renderRoles();
+})();
+</script>
+<script>
+/* 10 techniques de demande · aligné sur le support V4 (octobre 2026) :
+   R.C.T.F.C. planche 26, critique de la demande planche 28, feu tricolore planche 24, nettoyage planches 34-35.
+   Techniques 6 et 8 : compléments JLS, absents de la V4. Exemples sur une unité fictive. */
+(function(){
+"use strict";
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const RM=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+const st={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+async function copy(text,btn){
+  const old=btn.textContent;
+  try{await navigator.clipboard.writeText(text);btn.textContent="Copiée";}
+  catch(e){const ta=document.createElement("textarea");ta.value=text;ta.style.cssText="position:fixed;left:-9999px";document.body.appendChild(ta);ta.select();let ok=false;try{ok=document.execCommand("copy")}catch(_){}document.body.removeChild(ta);btn.textContent=ok?"Copiée":"Copie impossible : sélectionnez le texte"}
+  setTimeout(()=>{btn.textContent=old},1800);
+}
+
+const T=[
+ {k:"role",fam:"cadrer",b:"R",name:"Donner un rôle",ref:"Planche 26 · R",
+  quoi:"Dire à l'outil pour qui il travaille. Le rôle règle le vocabulaire, le niveau de détail et le ton.",
+  avant:"Fais une note sur les transmissions.",
+  apres:"Tu aides une cadre de santé à préparer une réunion d'équipe. Fais une note sur les transmissions entre l'équipe de jour et l'équipe de nuit.",
+  hl:"Tu aides une cadre de santé à préparer une réunion d'équipe.",
+  piege:"Un rôle d'expert (« tu es un DRH chevronné ») ne rend pas la réponse plus juste. Il la rend plus assurée."},
+ {k:"contexte",fam:"cadrer",b:"C",name:"Fournir le contexte et la source",ref:"Planches 26, 34-35",
+  quoi:"Coller le document sur lequel l'outil doit travailler, après passage au sas de nettoyage, et lui dire de s'y tenir.",
+  avant:"Pourquoi l'absentéisme a-t-il augmenté dans mon service ?",
+  apres:"Voici le tableau d'indicateurs de l'unité sur six mois, sans aucun nom. À partir de ce seul tableau, décris l'évolution de l'absentéisme.\n\n[coller le tableau nettoyé]",
+  hl:"Voici le tableau d'indicateurs de l'unité sur six mois, sans aucun nom. À partir de ce seul tableau,",
+  piege:"Sans source, l'outil comble les vides avec ce qui est plausible. Un document non nettoyé reste au feu rouge."},
+ {k:"tache",fam:"cadrer",b:"T",name:"Une tâche, un verbe",ref:"Planche 26 · T",
+  quoi:"Une seule action par demande, annoncée par un verbe précis : liste, classe, résume, compare, reformule.",
+  avant:"Regarde ce compte rendu, fais un résumé, trouve des actions et écris un mail à l'équipe.",
+  apres:"Liste les décisions prises dans ce compte rendu, une par ligne, en commençant chacune par un verbe.",
+  hl:"Liste les décisions prises dans ce compte rendu",
+  piege:"Quatre tâches dans une demande donnent quatre moitiés de réponse. Enchaînez plutôt (technique 7)."},
+ {k:"format",fam:"cadrer",b:"F",name:"Imposer le format",ref:"Planche 26 · F",
+  quoi:"Dire la forme attendue : tableau avec colonnes nommées, nombre de points, longueur, public qui va lire.",
+  avant:"Résume ce compte rendu.",
+  apres:"Résume ce compte rendu en tableau à trois colonnes : décision, pilote, échéance. Dix lignes au plus, lisible par l'équipe de nuit.",
+  hl:"en tableau à trois colonnes : décision, pilote, échéance. Dix lignes au plus, lisible par l'équipe de nuit.",
+  piege:"Laisser l'outil choisir la longueur, c'est recevoir un texte long, lisse et peu utilisable."},
+ {k:"contraintes",fam:"cadrer",b:"C",name:"Poser les contraintes",ref:"Planche 26 · C",
+  quoi:"Écrire ce que l'outil n'a pas le droit de faire. C'est la brique la plus oubliée, et celle qui protège.",
+  avant:"Transforme ce compte rendu en plan d'action.",
+  apres:"Transforme ce compte rendu en plan d'action. N'invente aucun nom, aucune date, aucun objectif chiffré. Si un élément manque, écris « à définir en réunion de suivi ».",
+  hl:"N'invente aucun nom, aucune date, aucun objectif chiffré. Si un élément manque, écris « à définir en réunion de suivi ».",
+  piege:"Sans contrainte, l'outil désigne des pilotes et fixe des échéances que personne n'a décidés."},
+ {k:"exemple",fam:"guider",b:"+",name:"Montrer un exemple",ref:"Complément",
+  quoi:"Donner une ligne modèle pour fixer le ton et la structure. L'outil imite mieux qu'il ne devine.",
+  avant:"Propose un ordre du jour pour la réunion de jeudi.",
+  apres:"Propose un ordre du jour pour la réunion de jeudi (45 minutes). Rédige chaque point sur ce modèle :\n13 h 00 - 13 h 10 · Les chiffres du mois · objectif : partager les faits sans les commenter.",
+  hl:"Rédige chaque point sur ce modèle :\n13 h 00 - 13 h 10 · Les chiffres du mois · objectif : partager les faits sans les commenter.",
+  piege:"Un exemple tiré d'un vrai document doit passer au nettoyage comme le reste. L'outil peut aussi trop copier le modèle : variez-le."},
+ {k:"etapes",fam:"guider",b:"+",name:"Découper en étapes",ref:"Ateliers à paliers",
+  quoi:"Avancer en plusieurs demandes successives : les faits, puis l'analyse, puis le message. Vous validez chaque étape.",
+  avant:"Analyse ces indicateurs, trouve les causes et rédige le message à l'équipe.",
+  apres:"Étape 1 : liste uniquement les faits que montre ce tableau, sans les expliquer. J'attendrai ta liste avant de te demander l'analyse.",
+  hl:"Étape 1 : liste uniquement les faits que montre ce tableau, sans les expliquer.",
+  piege:"Tout demander d'un coup sur un sujet sensible mélange faits et interprétations, et vous ne voyez plus où l'outil a extrapolé."},
+ {k:"questions",fam:"guider",b:"+",name:"Faire poser les questions d'abord",ref:"Complément",
+  quoi:"Demander à l'outil ce qui lui manque avant qu'il réponde. Ses questions montrent les trous de votre demande.",
+  avant:"Prépare l'entretien annuel d'un agent.",
+  apres:"Je prépare l'entretien annuel d'un agent. Avant de répondre, pose-moi les trois questions dont tu as besoin. Attends mes réponses.",
+  hl:"Avant de répondre, pose-moi les trois questions dont tu as besoin. Attends mes réponses.",
+  piege:"Répondre « fais au mieux » annule l'effet. Et vos réponses restent soumises à la liste rouge : aucun nom, aucune situation individuelle."},
+ {k:"critique",fam:"controler",b:"V",name:"Demander une auto-critique",ref:"Planche 28 · A.V.E.C.",
+  quoi:"Après la réponse, demander à l'outil de relire son texte et de signaler ce qui ne vient pas du document fourni.",
+  avant:"Merci, c'est parfait.",
+  apres:"Relis ta réponse. Signale chaque phrase qui ne figure pas dans le document fourni et chaque supposition, en les citant.",
+  hl:"Signale chaque phrase qui ne figure pas dans le document fourni et chaque supposition, en les citant.",
+  piege:"La relecture par l'outil ne vaut pas validation. Vérifier reste votre geste : c'est le V d'A.V.E.C."},
+ {k:"iterer",fam:"controler",b:"↻",name:"Itérer plutôt que recommencer",ref:"Planche 28",
+  quoi:"Corriger la réponse par des consignes ciblées, en gardant ce qui était bon.",
+  avant:"Non, recommence.",
+  apres:"Garde la structure. Raccourcis la partie 2 de moitié, retire le jargon et remplace « optimiser » par des mots du service.",
+  hl:"Garde la structure.",
+  piege:"Relancer à zéro fait perdre ce qui était réussi, et la nouvelle réponse aura d'autres défauts."}
+];
+const FAMNAME={cadrer:"Cadrer la demande",guider:"Guider l'outil",controler:"Contrôler la réponse"};
+
+let cur=0, view="apres", fam="all";
+let tried=st.get("cay-th-tried")||[]; if(!Array.isArray(tried))tried=[];
+function ring(){const n=tried.length;$("#th-count").textContent=n+" / 10";$("#th-ring").style.strokeDashoffset=String(163.4*(1-n/10))}
+function tiles(){
+  $("#th-tiles").innerHTML=T.map((t,i)=>`<button type="button" class="tile${tried.includes(t.k)?" tried":""}${fam!=="all"&&t.fam!==fam?" dim":""}" role="option" id="th-t-${t.k}" data-i="${i}" data-fam="${t.fam}" style="--i:${i}" aria-selected="${i===cur}"><span class="num">${String(i+1).padStart(2,"0")} · ${esc(t.b)}</span><span class="nm">${esc(t.name)}</span><span class="done" aria-hidden="true">✓</span></button>`).join("");
+  $$("#th-tiles .tile").forEach(b=>{
+    b.addEventListener("click",()=>select(+b.dataset.i,true));
+    b.addEventListener("keydown",e=>{const d={ArrowRight:1,ArrowDown:1,ArrowLeft:-1,ArrowUp:-1}[e.key];if(d){e.preventDefault();const n=(cur+d+10)%10;select(n,true);$("#th-t-"+T[n].k).focus()}});
+    if(!RM&&matchMedia("(hover:hover)").matches){
+      b.addEventListener("pointermove",e=>{const r=b.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;b.style.transform=`rotateX(${-y*10}deg) rotateY(${x*12}deg) translateY(-2px)`});
+      b.addEventListener("pointerleave",()=>{b.style.transform=""});
+    }
+  });
+}
+function demandHtml(t){
+  if(view==="avant")return `<span class="label">Avant</span>${esc(t.avant)}`;
+  const i=t.apres.indexOf(t.hl);
+  if(i<0)return `<span class="label">Après</span>${esc(t.apres)}`;
+  return `<span class="label">Après · le surligné est l'ajout</span>${esc(t.apres.slice(0,i))}<mark>${esc(t.hl)}</mark>${esc(t.apres.slice(i+t.hl.length))}`;
+}
+let typer=null;
+function typeMark(){
+  clearInterval(typer);const m=$("#th-demand mark");if(!m||RM)return;
+  const full=m.textContent;let n=0;m.textContent="";
+  typer=setInterval(()=>{n+=Math.max(1,Math.round(full.length/45));m.textContent=full.slice(0,n);if(n>=full.length){m.textContent=full;clearInterval(typer)}},16);
+}
+function body(anim){
+  const t=T[cur],lab=$("#th-lab"),on=tried.includes(t.k);
+  lab.dataset.fam=t.fam;
+  $("#th-body").innerHTML=`<div class="meta"><span class="chip">${String(cur+1).padStart(2,"0")} · ${esc(FAMNAME[t.fam])}</span><span class="chip plain">${esc(t.ref)}</span></div>
+   <p class="big">${esc(t.name)}</p><p>${esc(t.quoi)}</p>
+   <div class="toggle" role="group" aria-label="Version" data-v="${view}"><span class="pill" aria-hidden="true"></span><button type="button" data-v="avant" aria-pressed="${view==="avant"}">Avant</button><button type="button" data-v="apres" aria-pressed="${view==="apres"}">Après</button></div>
+   <pre class="demand" id="th-demand">${demandHtml(t)}</pre>
+   <div class="row"><button type="button" class="btn primary" id="th-copy">Copier la version renforcée</button><button type="button" class="btn${on?" tried":""}" id="th-tried" aria-pressed="${on}">${on?"Essayée ✓":"Je l'ai essayée"}</button><button type="button" class="btn ghost" id="th-next">Technique suivante</button></div>
+   <div class="pitfall"><b>Piège</b><p>${esc(t.piege)}</p></div>`;
+  if(anim){lab.classList.remove("swap");void lab.offsetWidth;lab.classList.add("swap")}
+  $$("#th-body .toggle button").forEach(b=>b.addEventListener("click",()=>{view=b.dataset.v;$("#th-body .toggle").dataset.v=view;$$("#th-body .toggle button").forEach(x=>x.setAttribute("aria-pressed",String(x.dataset.v===view)));$("#th-demand").innerHTML=demandHtml(t);if(view==="apres")typeMark()}));
+  $("#th-copy").addEventListener("click",e=>copy(t.apres,e.currentTarget));
+  $("#th-tried").addEventListener("click",()=>{tried=tried.includes(t.k)?tried.filter(x=>x!==t.k):tried.concat(t.k);st.set("cay-th-tried",tried);ring();tiles();body(false)});
+  $("#th-next").addEventListener("click",()=>select((cur+1)%10,true));
+  if(view==="apres"&&anim)typeMark();
+}
+function select(i,anim){cur=i;view="apres";$$("#th-tiles .tile").forEach(b=>b.setAttribute("aria-selected",String(+b.dataset.i===i)));body(anim)}
+$$("#th-fam button").forEach(b=>b.addEventListener("click",()=>{fam=b.dataset.f;$$("#th-fam button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));if(fam!=="all"&&T[cur].fam!==fam)cur=T.findIndex(t=>t.fam===fam);tiles();body(true)}));
+tiles();ring();body(false);
+
+/* Quiz */
+const Q=[
+ {p:"Transforme ce compte rendu en plan d'action.\n[compte rendu collé]",a:"contraintes",o:["role","contraintes","exemple","questions"],e:"Sans contrainte, l'outil invente pilotes, dates et objectifs chiffrés. Ajoutez : n'invente aucun nom ni aucune date, écris « à définir » quand un élément manque."},
+ {p:"Écris un message à l'équipe sur le nouveau planning.",a:"contexte",o:["contexte","format","iterer","critique"],e:"L'outil ne sait rien du planning, de l'équipe ni de ce qui inquiète. Donnez la situation, sans nom."},
+ {p:"Analyse ces indicateurs, propose des causes, rédige la note pour la direction et prépare trois diapositives.",a:"tache",o:["tache","role","exemple","contraintes"],e:"Quatre tâches à la fois. Une demande, un verbe, puis enchaînez."},
+ {p:"(après une réponse qui cite trois causes absentes du tableau)\nMerci, je la transmets.",a:"critique",o:["iterer","critique","format","contexte"],e:"Demandez à l'outil de signaler ce qui ne vient pas du document, puis vérifiez vous-même avant de transmettre."},
+ {p:"Prépare l'entretien annuel d'un agent.",a:"questions",o:["questions","exemple","tache","role"],e:"Trop de choses manquent. Faites-lui poser ses questions d'abord, et répondez sans élément identifiant."},
+ {p:"Résume ce document.\n[note de 6 pages collée]",a:"format",o:["format","contraintes","etapes","role"],e:"Sans format, la réponse sera longue et générale. Précisez : combien de points, pour qui, sous quelle forme."}
+];
+const NAME=Object.fromEntries(T.map(t=>[t.k,t.name]));
+let qi=0,qres=[];
+function quiz(anim){
+  const box=$("#th-quiz");
+  const steps=`<div class="qsteps" aria-hidden="true">${Q.map((_,i)=>`<i class="${qres[i]===true?"ok":qres[i]===false?"ko":i===qi?"cur":""}"></i>`).join("")}</div>`;
+  if(qi>=Q.length){const good=qres.filter(Boolean).length;
+    box.innerHTML=steps+`<div class="qcard${anim?" enter":""}"><p class="big">${good} / ${Q.length}</p><p>${good===Q.length?"Toutes trouvées.":good>=4?"Bonne lecture des demandes.":"Reprenez les techniques en rouge ci-dessus."}</p><div class="row"><button type="button" class="btn" id="q-again">Recommencer</button></div></div>`;
+    $("#q-again").addEventListener("click",()=>{qi=0;qres=[];quiz(true)});return}
+  const q=Q[qi];
+  box.innerHTML=steps+`<div class="qcard${anim?" enter":""}"><span class="eyebrow">Demande ${qi+1} sur ${Q.length}</span><div class="pr">${esc(q.p).replace(/\n/g,"<br>")}</div>
+   <div class="opts" role="group" aria-label="Technique qui manque">${q.o.map(k=>`<button type="button" data-k="${k}">${esc(NAME[k])}</button>`).join("")}</div><div id="q-fb" class="stack"></div></div>`;
+  $$("#th-quiz .opts button").forEach(b=>b.addEventListener("click",()=>{
+    if(qres[qi]!==undefined)return;const ok=b.dataset.k===q.a;qres[qi]=ok;
+    b.classList.add(ok?"right":"wrong");if(!ok)$(`#th-quiz .opts button[data-k="${q.a}"]`).classList.add("right");
+    $("#q-fb").innerHTML=`<p>${esc(q.e)}</p><div class="row"><button type="button" class="btn primary" id="q-next">${qi<Q.length-1?"Demande suivante":"Voir le score"}</button><button type="button" class="btn ghost" id="q-see">Voir la technique</button></div>`;
+    $(".qsteps i:nth-child("+(qi+1)+")").className=ok?"ok":"ko";
+    $("#q-next").addEventListener("click",()=>{qi++;quiz(true)});
+    $("#q-see").addEventListener("click",()=>{select(T.findIndex(t=>t.k===q.a),true);$("#th-lab").scrollIntoView({behavior:RM?"auto":"smooth",block:"center"})});
+  }));
+}
+quiz(false);
+
+/* Feu tricolore */
+const L={
+ rouge:{t:"Rouge · jamais",d:"Ce qui identifie une personne ou touche à sa santé ou à sa situation : nom d'un patient ou d'un agent, diagnostic, numéro de dossier, arrêt maladie, sanction, entretien individuel."},
+ orange:{t:"Orange · après nettoyage",d:"Comptes rendus, tableaux d'activité, notes internes : utilisables une fois les noms, dates et détails identifiants retirés (sas de nettoyage, planches 34-35). Un poste, un horaire et une ancienneté suffisent parfois à reconnaître quelqu'un."},
+ vert:{t:"Vert · libre",d:"Documents publics, recommandations de la HAS, trames vides, textes généraux, demandes qui ne citent aucune situation réelle."}
+};
+function light(k,anim){$$(".pole button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.l===k)));const el=$("#th-light");el.innerHTML=`<h3>${L[k].t}</h3><p>${L[k].d}</p><p class="note">Dans le doute, la couleur la plus prudente. Et toujours l'outil autorisé par l'établissement.</p>`;if(anim){el.classList.remove("enter");void el.offsetWidth;el.classList.add("enter")}}
+$$(".pole button").forEach(b=>b.addEventListener("click",()=>light(b.dataset.l,true)));
+light("rouge",false);
+
+/* Hero : briques qui s'allument et demande qui se tape */
+const parts=["Tu aides une cadre de santé à préparer une réunion d'équipe. ","À partir du compte rendu ci-dessous, ","liste les décisions prises, ","en tableau à trois colonnes. ","N'invente aucun nom ni aucune date : écris « à vérifier »."];
+const hb=$$("#hero-bricks span"),ht=$("#hero-typed");
+if(RM){hb.forEach(s=>s.classList.add("on"))}
+else{
+  let p=0,c=0,txt="",pause=0;
+  hb.forEach(s=>s.classList.add("on"));
+  setTimeout(function loop(){
+    if(document.hidden){setTimeout(loop,600);return}
+    if(pause>0){pause--;setTimeout(loop,60);return}
+    if(p===0&&c===0){txt="";hb.forEach(s=>s.classList.remove("on"))}
+    if(c===0)hb[p].classList.add("on");
+    txt+=parts[p][c];c++;
+    ht.innerHTML=esc(txt)+'<span class="caret"></span>';
+    if(c>=parts[p].length){p++;c=0;if(p>=parts.length){p=0;pause=60}}
+    setTimeout(loop,24);
+  },2200);
+}
+
+/* Entrée animée des panneaux */
+$$("nav.tabs button").forEach(b=>b.addEventListener("click",()=>{const p=$("#p-"+b.dataset.t);if(!p||RM)return;p.classList.remove("enter");void p.offsetWidth;p.classList.add("enter")}));
+})();
+</script>
+
+</body></html>
